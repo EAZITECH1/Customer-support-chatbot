@@ -270,8 +270,7 @@ async function handleUserMessage(chatId, userId, username, text) {
     }
 
     // Persist conversation
-    store.append(sessionId, { role: 'user', content: text });
-    store.append(sessionId, { role: 'assistant', content: finalText });
+    store.setMessages(sessionId, transcript);
 
     clearInterval(typingInterval);
     await sendMessage(chatId, finalText);
