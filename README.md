@@ -8,7 +8,8 @@ The prompt is the product. [`support-agent-prompt.md`](./support-agent-prompt.md
 
 ## In this repo
 
-- [`support-agent-prompt.md`](./support-agent-prompt.md) — the full, copy-pasteable prompt
+- [`support-agent-prompt.md`](./support-agent-prompt.md) — the full, working agent prompt (configured for EAZITECH Web3 studio)
+- [`support-agent-prompt.template.md`](./support-agent-prompt.template.md) — clean reusable template for any company or service
 - [`submission.md`](./submission.md) — agent ID, MemWalAccount, wallet, blob count, checklist
 - [`evidence/blobs.md`](./evidence/blobs.md) — mainnet blobs the agent wrote, with walruscan links
 - [`evidence/findings.md`](./evidence/findings.md) — measured relayer findings and how each shaped the prompt
