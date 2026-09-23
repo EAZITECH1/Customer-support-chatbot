@@ -68,7 +68,7 @@ export class MemWal {
       // Inherit env; override HOME so the child loads OUR isolated wallet creds.
       env: {
         ...process.env,
-        ...(this.home ? { HOME: this.home, USERPROFILE: this.home } : {}),
+        ...(this.home ? { HOME: this.home } : {}),
         ...(this.debug ? { MEMWAL_MCP_DEBUG: '1' } : {}),
       },
       stderr: 'inherit', // MemWal logs to stderr; surface it in our server logs

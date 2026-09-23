@@ -3,7 +3,7 @@
 //
 // Flow per user message:
 //   UI --POST /api/chat--> backend
-//   backend: system prompt (support-agent-prompt.md) + history + user msg
+//   backend: system prompt (support-bot-prompt.md) + history + user msg
 //            -> OpenAI-compatible model WITH MemWal tools
 //            -> execute any tool calls against the MemWal MCP server (Walrus)
 //            -> feed results back, loop until the model returns a final answer
@@ -19,10 +19,13 @@ import { MemWal, summarizeToolResult } from './memwal.js';
 import { LLM } from './llm.js';
 import { SessionStore } from './store.js';
 import { materializeCredentials } from './credentials.js';
+import { startTelegramBot } from './telegram.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const PROMPT_PATH = join(ROOT, 'support-agent-prompt.md');
+const PROMPT_PATH = existsSync(join(ROOT, 'support-agent-prompt.md'))
+  ? join(ROOT, 'support-agent-prompt.md')
+  : join(ROOT, 'support-bot-prompt.md');
 const PUBLIC_DIR = join(ROOT, 'public');
 
 const PORT = Number(process.env.PORT || 8787);
@@ -128,7 +131,7 @@ function loadSystemPrompt() {
   } else {
     base =
       'You are a helpful, concise customer-support agent for EAZITECH. ' +
-      'Be warm, direct, and solution-focused. (Placeholder prompt — create support-agent-prompt.md to override.)';
+      'Be warm, direct, and solution-focused. (Placeholder prompt — create support-bot-prompt.md to override.)';
   }
   // Minimal runtime addendum: the human-authored prompt above owns the memory
   // behaviour and namespace scheme. We only pin the date and the tool surface so
@@ -204,7 +207,7 @@ app.get('/api/health', (_req, res) => {
       error: memwalError,
     },
     llm: { baseUrl: llm.baseUrl, model: llm.model, configured: llm.configured },
-    systemPrompt: { file: 'support-agent-prompt.md', found: prompt.found },
+    systemPrompt: { file: 'support-bot-prompt.md', found: prompt.found },
   });
 });
 
@@ -353,6 +356,12 @@ initMemWal().then(() => {
   if (!memwalReady) {
     console.log('  ⚠  MemWal not connected yet (relayer/auth). Memory recovers automatically on the next chat.');
     console.log('     If it persists: check the relayer, or re-run  npm run memwal:login\n');
+  }
+  if (process.env.TELEGRAM_BOT_TOKEN) {
+    console.log('  starting Telegram Bot (@EazitechSupportBot)…');
+    startTelegramBot({ memwal, llm, ensureMemWal }).catch((err) => {
+      console.error('[telegram] Failed to start bot:', err.message);
+    });
   }
 });
 

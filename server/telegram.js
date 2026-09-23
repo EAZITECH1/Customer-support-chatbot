@@ -14,15 +14,12 @@ import { materializeCredentials } from './credentials.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const PROMPT_PATH = join(ROOT, 'support-bot-prompt.md');
+const PROMPT_PATH = existsSync(join(ROOT, 'support-agent-prompt.md'))
+  ? join(ROOT, 'support-agent-prompt.md')
+  : join(ROOT, 'support-bot-prompt.md');
 
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-if (!TOKEN) {
-  console.error('[telegram] Error: TELEGRAM_BOT_TOKEN is missing in .env');
-  process.exit(1);
-}
-
-const TELEGRAM_API = `https://api.telegram.org/bot${TOKEN}`;
+const TELEGRAM_API = TOKEN ? `https://api.telegram.org/bot${TOKEN}` : null;
 const MAX_ROUNDS = Number(process.env.LLM_MAX_TOOL_ROUNDS || 6);
 const NAMESPACE = process.env.MEMWAL_NAMESPACE || 'support';
 const MEMWAL_HOME = join(ROOT, '.memwal-home');
@@ -30,26 +27,36 @@ const MEMWAL_HOME = join(ROOT, '.memwal-home');
 // ── Boot dependencies ────────────────────────────────────────────────────────
 const store = new SessionStore(join(ROOT, 'data', 'telegram-sessions.json'));
 
-const llm = new LLM({
-  baseUrl: process.env.LLM_BASE_URL,
-  apiKey: process.env.LLM_API_KEY,
-  model: process.env.LLM_MODEL,
-  temperature: process.env.LLM_TEMPERATURE,
-});
-
+let llm = null;
+let memwal = null;
 let walletInfo = null;
-try {
-  walletInfo = materializeCredentials(process.env.MEMWAL_CREDENTIALS_JSON, MEMWAL_HOME);
-} catch (err) {
-  console.error('[memwal] credential error:', err.message);
+
+function initStandalone() {
+  if (llm && memwal) return;
+  llm = new LLM({
+    baseUrl: process.env.LLM_BASE_URL,
+    apiKey: process.env.LLM_API_KEY,
+    model: process.env.LLM_MODEL,
+    temperature: process.env.LLM_TEMPERATURE,
+  });
+
+  try {
+    walletInfo = materializeCredentials(process.env.MEMWAL_CREDENTIALS_JSON, MEMWAL_HOME);
+  } catch (err) {
+    console.error('[memwal] credential error:', err.message);
+  }
+
+  memwal = new MemWal({
+    spec: process.env.MEMWAL_MCP_SPEC,
+    namespace: NAMESPACE,
+    debug: process.env.MEMWAL_MCP_DEBUG === '1',
+    home: walletInfo ? MEMWAL_HOME : undefined,
+  });
 }
 
-const memwal = new MemWal({
-  spec: process.env.MEMWAL_MCP_SPEC,
-  namespace: NAMESPACE,
-  debug: process.env.MEMWAL_MCP_DEBUG === '1',
-  home: walletInfo ? MEMWAL_HOME : undefined,
-});
+let activeMemwal = null;
+let activeLlm = null;
+let activeEnsureMemWal = null;
 
 let memwalReady = false;
 let memwalToolNames = [];
@@ -203,14 +210,20 @@ async function handleUserMessage(chatId, userId, username, text) {
     const transcript = session.messages.slice();
     transcript.push({ role: 'user', content: customerTag + text });
 
-    await ensureMemWal();
-    const tools = [HEALTH_TOOL, ...(memwalReady ? memwal.asOpenAITools() : [])];
+    if (activeEnsureMemWal) {
+      await activeEnsureMemWal();
+    } else {
+      await ensureMemWal();
+    }
+    const curMemwal = activeMemwal || memwal;
+    const curLlm = activeLlm || llm;
+    const tools = [HEALTH_TOOL, ...(curMemwal?.tools?.length ? curMemwal.asOpenAITools() : (memwalReady ? memwal.asOpenAITools() : []))];
     let finalText = null;
 
     for (let round = 0; round < MAX_ROUNDS; round++) {
       sendTyping(chatId);
 
-      const assistant = await llm.complete({
+      const assistant = await curLlm.complete({
         messages: [{ role: 'system', content: system }, ...transcript],
         tools,
       });
@@ -241,15 +254,15 @@ async function handleUserMessage(chatId, userId, username, text) {
 
         let result;
         if (isHealth) {
-          const h = await memwal.health();
+          const h = await curMemwal.health();
           result = {
             ok: h.ok,
             text: h.ok
               ? `HEALTHY. Walrus Memory reachable. Memory is live.`
               : `UNHEALTHY: Walrus Memory unavailable.`,
           };
-        } else if (memwal.isMemoryTool(name)) {
-          result = await memwal.call(name, args);
+        } else if (curMemwal.isMemoryTool(name)) {
+          result = await curMemwal.call(name, args);
         } else {
           result = { ok: false, text: `Unknown tool: ${name}` };
         }
@@ -330,4 +343,30 @@ async function startPolling() {
   }
 }
 
-startPolling();
+export async function startTelegramBot(options = {}) {
+  if (!process.env.TELEGRAM_BOT_TOKEN) {
+    console.log('[telegram] TELEGRAM_BOT_TOKEN not configured; skipping Telegram bot.');
+    return;
+  }
+
+  if (options.memwal) activeMemwal = options.memwal;
+  if (options.llm) activeLlm = options.llm;
+  if (options.ensureMemWal) activeEnsureMemWal = options.ensureMemWal;
+
+  if (!activeMemwal || !activeLlm) {
+    initStandalone();
+    if (!activeMemwal) activeMemwal = memwal;
+    if (!activeLlm) activeLlm = llm;
+    if (!activeEnsureMemWal) activeEnsureMemWal = ensureMemWal;
+  }
+
+  console.log('[telegram] Starting Telegram polling loop…');
+  startPolling().catch((err) => {
+    console.error('[telegram] Fatal polling error:', err);
+  });
+}
+
+const isMain = process.argv[1] && process.argv[1].endsWith('telegram.js');
+if (isMain) {
+  startTelegramBot();
+}
