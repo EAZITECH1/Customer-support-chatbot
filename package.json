@@ -1,18 +1,17 @@
 {
-  "name": "customer-support-agent-memory",
+  "name": "eazitech-support-chat",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Localhost reference harness for the memory-first support agent. Runs an OpenAI-compatible model through the MemWal (Walrus Memory) tool loop.",
+  "description": "Localhost customer-support chat for a hackathon demo. Brand-matched to eazitech.xyz. Backend runs an OpenAI-compatible model through the MemWal (Walrus Memory) MCP tool loop.",
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
     "memwal:login": "node server/memwal-login.js",
     "memwal:capture": "node server/memwal-capture.js",
-    "memwal:smoke": "node server/smoke-memwal.js"
-  },
-  "engines": {
-    "node": ">=18"
+    "memwal:smoke": "node server/smoke-memwal.js",
+    "demo": "node server/demo-conversation.js",
+    "telegram": "node server/telegram.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.29.0",

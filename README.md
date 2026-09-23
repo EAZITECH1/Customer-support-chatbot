@@ -101,6 +101,20 @@ Notes:
 
 **Prompt only, no server** — to use just the agent in your own client: load `support-agent-prompt.md` as the system prompt in any MCP client that exposes the MemWal tools (Claude Code, Cursor, Codex), fill the config block, and point it at your Walrus Memory account.
 
+## Run via Telegram Bot
+
+The agent is reachable by real users and judges directly on Telegram:
+
+- **Live Telegram Bot:** [@EazitechSupportBot](https://t.me/EazitechSupportBot)
+
+To run the Telegram bot integration:
+```bash
+# Set your Telegram Bot token in .env
+TELEGRAM_BOT_TOKEN="your_bot_token"
+
+npm run telegram
+```
+
 ## Feedback
 
 Issues opened against MemWal while building this:

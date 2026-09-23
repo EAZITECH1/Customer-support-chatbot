@@ -11,6 +11,7 @@
 | Network | Mainnet |
 | MemWal package | `0xe7c16fbea0560e7057e2bf7422feaa4fb313749fc69c9e9092fac7a33b81d7f5` |
 | Overview page | one-page visual overview (Claude Artifact — share link on request) |
+| Telegram Bot | [@EazitechSupportBot](https://t.me/EazitechSupportBot) |
 | Demo video | [youtu.be/Ogv5r7-aKMo](https://youtu.be/Ogv5r7-aKMo) |
 | Issues filed | [MemWal#814](https://github.com/MystenLabs/MemWal/issues/814) · [#815](https://github.com/MystenLabs/MemWal/issues/815) · [#816](https://github.com/MystenLabs/MemWal/issues/816) |
 
