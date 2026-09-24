@@ -123,7 +123,7 @@ function loadSystemPrompt() {
     base = readFileSync(PROMPT_PATH, 'utf8').trim();
   } else {
     base =
-      'You are a helpful customer-support agent for EAZITECH. ' +
+      'You are a helpful customer-support chatbot for EAZITECH. ' +
       'Be warm, direct, and solution-focused.';
   }
   const runtime = [
@@ -183,7 +183,7 @@ async function handleUserMessage(chatId, userId, username, text) {
   if (text === '/start') {
     const welcome =
       `👋 *Welcome to EAZITECH Customer Support*\n\n` +
-      `I am your dedicated support agent with persistent institutional memory on *Walrus*.\n\n` +
+      `I am your dedicated customer support chatbot with persistent institutional memory on *Walrus*.\n\n` +
       `How can I assist you with your project deliverables, video exports, content, or technical setup today?\n\n` +
       `_(Type /reset at any time to start a fresh support ticket)_`;
     await sendMessage(chatId, welcome);

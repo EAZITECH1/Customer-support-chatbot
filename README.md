@@ -1,8 +1,8 @@
-# EAZITΞCH — Decentralized Institutional Memory Support Agent
+# EAZITΞCH — Decentralized Institutional Memory Customer Support Chatbot
 
 > **Built for "Walrus Sessions: Chatbots That Remember" (Sep 18 – Oct 9, 2026)**
 >
-> A production-ready, decentralized customer support agent powered by **Walrus Memory (MemWal MCP)** and an OpenAI-compatible LLM. Delivered as both a **24/7 Telegram Bot** and a **Web UI** styled after [eazitech.xyz](https://eazitech.xyz/).
+> A production-ready, decentralized customer support chatbot powered by **Walrus Memory (MemWal MCP)** and an OpenAI-compatible LLM. Delivered as both a **24/7 Telegram Bot** and a **Web UI** styled after [eazitech.xyz](https://eazitech.xyz/).
 
 ---
 
@@ -33,7 +33,7 @@ This system uses **Walrus decentralized blob storage** via the **MemWal MCP** se
 
 ## On-Chain Evidence (Sui & Walrus Mainnet)
 
-The support agent writes memories to Walrus on **Sui Mainnet**:
+The customer support chatbot writes memories to Walrus on **Sui Mainnet**:
 
 - **MemWalAccount Object**: [`0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4`](https://suiscan.xyz/mainnet/object/0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4) (Sui Mainnet Shared Object)
 - **Delegate Account**: `0x3d67903dd4d875d2ebfbba47fed2d7eb09e927e6049374ce7ed522a085577610`

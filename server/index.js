@@ -128,8 +128,8 @@ function loadSystemPrompt() {
     base = readFileSync(PROMPT_PATH, 'utf8').trim();
   } else {
     base =
-      'You are a helpful, concise customer-support agent for EAZITECH. ' +
-      'Be warm, direct, and solution-focused. (Placeholder prompt — create support-bot-prompt.md to override.)';
+      'You are a helpful, concise customer-support chatbot for EAZITECH. ' +
+      'Be warm, direct, and solution-focused. (Placeholder prompt — create support-agent-prompt.md to override.)';
   }
   // Minimal runtime addendum: the human-authored prompt above owns the memory
   // behaviour and namespace scheme. We only pin the date and the tool surface so

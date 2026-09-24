@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Localhost customer-support chat for a hackathon demo. Brand-matched to eazitech.xyz. Backend runs an OpenAI-compatible model through the MemWal (Walrus Memory) MCP tool loop.",
+  "description": "Customer Support Chatbot for a Web3 creator studio powered by Walrus Memory (MemWal MCP) and OpenAI-compatible LLMs.",
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",

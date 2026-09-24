@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Project** | EAZITECH Customer Support Agent — Decentralized Institutional Memory on Walrus |
+| **Project** | EAZITECH Customer Support Chatbot — Decentralized Institutional Memory on Walrus |
 | **System Prompt** | Production prompt — [support-agent-prompt.md](support-agent-prompt.md) (Template: [support-agent-prompt.template.md](support-agent-prompt.template.md)) |
 | **Agent ID (delegate key)** | `21a5566e62214e85fdd9010d19b571bf8b6c897bd84472fe8b948766675a4c2a4` |
 | **MemWalAccount Object** | [`0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4`](https://suiscan.xyz/mainnet/object/0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4) |
@@ -19,7 +19,7 @@
 
 ## What It Is
 
-An autonomous, decentralized customer support agent built for **EAZITECH** (a Web3 creator studio). Unlike conventional support bots that suffer from session amnesia or lock data inside proprietary SaaS vendors, this agent turns every resolved ticket into permanent, structured knowledge owned by the studio and stored immutably on **Walrus**.
+An autonomous, decentralized customer support chatbot built for **EAZITECH** (a Web3 creator studio). Unlike conventional support bots that suffer from session amnesia or lock data inside proprietary SaaS vendors, this chatbot turns every resolved ticket into permanent, structured knowledge owned by the studio and stored immutably on **Walrus**.
 
 When a customer reports an issue, the agent queries Walrus Memory (`memwal_recall`) across domain-specific namespaces (`resolved-video`, `resolved-billing`, etc.) before diagnosing. When an issue is resolved, it commits a structured, deduplicated post-mortem to Walrus on Sui Mainnet.
 
