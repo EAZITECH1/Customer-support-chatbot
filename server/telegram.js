@@ -14,9 +14,7 @@ import { materializeCredentials } from './credentials.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const PROMPT_PATH = existsSync(join(ROOT, 'support-agent-prompt.md'))
-  ? join(ROOT, 'support-agent-prompt.md')
-  : join(ROOT, 'support-bot-prompt.md');
+const PROMPT_PATH = join(ROOT, 'support-agent-prompt.md');
 
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_API = TOKEN ? `https://api.telegram.org/bot${TOKEN}` : null;

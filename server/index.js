@@ -23,9 +23,7 @@ import { startTelegramBot } from './telegram.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const PROMPT_PATH = existsSync(join(ROOT, 'support-agent-prompt.md'))
-  ? join(ROOT, 'support-agent-prompt.md')
-  : join(ROOT, 'support-bot-prompt.md');
+const PROMPT_PATH = join(ROOT, 'support-agent-prompt.md');
 const PUBLIC_DIR = join(ROOT, 'public');
 
 const PORT = Number(process.env.PORT || 8787);
