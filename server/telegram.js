@@ -67,7 +67,9 @@ let connecting = null;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function connectOnce() {
-  memwalToolNames = await memwal.connect();
+  const target = activeMemwal || memwal;
+  if (!target) return;
+  memwalToolNames = await target.connect();
   memwalReady = true;
   memwalError = null;
   lastConnectAt = Date.now();
@@ -216,8 +218,7 @@ async function handleUserMessage(chatId, userId, username, text) {
       await ensureMemWal();
     }
     const curMemwal = activeMemwal || memwal;
-    const curLlm = activeLlm || llm;
-    const tools = [HEALTH_TOOL, ...(curMemwal?.tools?.length ? curMemwal.asOpenAITools() : (memwalReady ? memwal.asOpenAITools() : []))];
+    const tools = [HEALTH_TOOL, ...(curMemwal?.tools?.length ? curMemwal.asOpenAITools() : [])];
     let finalText = null;
 
     for (let round = 0; round < MAX_ROUNDS; round++) {
@@ -296,8 +297,10 @@ async function handleUserMessage(chatId, userId, username, text) {
 
 // ── Long Polling Loop ─────────────────────────────────────────────────────────
 async function startPolling() {
-  console.log('[telegram] connecting to Walrus Memory relayer…');
-  await initMemWal();
+  if (!activeEnsureMemWal) {
+    console.log('[telegram] connecting to Walrus Memory relayer…');
+    await initMemWal();
+  }
 
   const me = await tgCall('getMe');
   if (!me.ok) {
