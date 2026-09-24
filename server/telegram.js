@@ -218,6 +218,7 @@ async function handleUserMessage(chatId, userId, username, text) {
       await ensureMemWal();
     }
     const curMemwal = activeMemwal || memwal;
+    const curLlm = activeLlm || llm;
     const tools = [HEALTH_TOOL, ...(curMemwal?.tools?.length ? curMemwal.asOpenAITools() : [])];
     let finalText = null;
 
@@ -277,7 +278,7 @@ async function handleUserMessage(chatId, userId, username, text) {
     }
 
     if (finalText === null) {
-      const forced = await llm.complete({
+      const forced = await curLlm.complete({
         messages: [{ role: 'system', content: system }, ...transcript],
       });
       finalText = forced.content || 'I have recorded your issue and am reviewing past resolutions.';
