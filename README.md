@@ -27,7 +27,7 @@ This system uses **Walrus decentralized blob storage** via the **MemWal MCP** se
 
 - **Telegram Bot (24/7)**: [@EazitechSupportBot](https://t.me/EazitechSupportBot)
 - **Web App**: Single-page support portal with real-time SSE stream of agent reasoning & MemWal tool calls.
-- **Public GitHub**: [EAZITECH1/Customer-support-agent-prompt](https://github.com/EAZITECH1/Customer-support-agent-prompt)
+- **Public GitHub**: [EAZITECH1/Customer-support-chatbot](https://github.com/EAZITECH1/Customer-support-chatbot)
 
 ---
 
@@ -114,8 +114,8 @@ The prompt and tool loop were tested against an 8-point behavioral test:
 
 ### 2. Installation
 ```bash
-git clone https://github.com/EAZITECH1/Customer-support-agent-prompt.git
-cd Customer-support-agent-prompt
+git clone https://github.com/EAZITECH1/Customer-support-chatbot.git
+cd Customer-support-chatbot
 npm install
 cp .env.example .env
 ```
