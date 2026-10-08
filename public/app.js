@@ -1,6 +1,9 @@
 // public/app.js
-// Talks to the backend over SSE. No localStorage/sessionStorage — the session id
-// lives only in memory (per requirements), so a refresh starts a fresh session.
+// Talks to the backend over SSE. Persists current conversation in localStorage
+// so refreshing the browser resumes the ongoing session seamlessly.
+
+const STORAGE_SESSION_KEY = 'eazitech_session_id';
+const STORAGE_HISTORY_KEY = 'eazitech_chat_history';
 
 const thread = document.getElementById('thread');
 const form = document.getElementById('composer');
@@ -11,11 +14,47 @@ const statusText = document.getElementById('statusText');
 const nsLabel = document.getElementById('nsLabel');
 const resetBtn = document.getElementById('reset');
 
-let sessionId = newId();
+let sessionId = loadSessionId();
 let busy = false;
 
 function newId() {
   return 'sess_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+}
+
+function loadSessionId() {
+  let id = localStorage.getItem(STORAGE_SESSION_KEY);
+  if (!id) {
+    id = newId();
+    localStorage.setItem(STORAGE_SESSION_KEY, id);
+  }
+  return id;
+}
+
+function saveHistoryMessage(role, text) {
+  try {
+    const list = JSON.parse(localStorage.getItem(STORAGE_HISTORY_KEY) || '[]');
+    list.push({ role, text, time: Date.now() });
+    localStorage.setItem(STORAGE_HISTORY_KEY, JSON.stringify(list));
+  } catch (e) {
+    console.warn('Failed to save chat to localStorage', e);
+  }
+}
+
+function restoreHistory() {
+  try {
+    const raw = localStorage.getItem(STORAGE_HISTORY_KEY);
+    if (!raw) return;
+    const list = JSON.parse(raw);
+    if (Array.isArray(list) && list.length > 0) {
+      for (const item of list) {
+        if (item.role && item.text) {
+          addMsg(item.role, item.text, false);
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('Failed to restore chat from localStorage', e);
+  }
 }
 
 // ── Health / status light ──────────────────────────────────
@@ -39,7 +78,7 @@ async function refreshHealth() {
 }
 
 // ── Rendering ──────────────────────────────────────────────
-function addMsg(role, text) {
+function addMsg(role, text, save = true) {
   const el = document.createElement('div');
   el.className = 'msg ' + (role === 'user' ? 'user' : 'bot');
   const who = document.createElement('div');
@@ -51,6 +90,9 @@ function addMsg(role, text) {
   el.append(who, bubble);
   thread.appendChild(el);
   scroll();
+  if (save) {
+    saveHistoryMessage(role, text);
+  }
   return bubble;
 }
 
@@ -225,10 +267,13 @@ resetBtn.addEventListener('click', async () => {
     body: JSON.stringify({ sessionId }),
   }).catch(() => {});
   sessionId = newId();
+  localStorage.setItem(STORAGE_SESSION_KEY, sessionId);
+  localStorage.removeItem(STORAGE_HISTORY_KEY);
   thread.innerHTML = '';
   systemNote('New session started.');
   input.focus();
 });
 
+restoreHistory();
 refreshHealth();
 input.focus();
