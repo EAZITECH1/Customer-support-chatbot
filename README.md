@@ -8,18 +8,18 @@
 
 ## The Problem: The Amnesiac Support Bot
 
-Most AI customer support bots suffer from severe session amnesia:
-1. When a client encounters an obscure video export error, a render pipeline mismatch, or a milestone delivery dispute, the support bot starts from zero every time.
-2. Fixes found by senior engineers evaporate when the ticket closes, forcing repeated debugging.
-3. Proprietary memory features lock knowledge into closed SaaS silos (e.g. OpenAI Assistants API), meaning switching LLM providers wipes institutional memory clean.
+Most AI customer support bots across companies suffer from severe session amnesia:
+1. When a client encounters an obscure technical error, cloud pipeline issue, or account dispute, the support bot starts from zero every time.
+2. Fixes found by senior engineers evaporate when the ticket closes, forcing repeated troubleshooting.
+3. Proprietary memory features lock knowledge into closed SaaS silos (e.g. OpenAI Assistants API), meaning switching LLM providers wipes company institutional memory clean.
 
 ## The Solution: Sovereign Memory on Walrus
 
-This system uses **Walrus decentralized blob storage** via the **MemWal MCP** server as an immutable, portable institutional memory layer:
+This system provides **companies and tech enterprises** with an immutable, portable institutional memory layer powered by **Walrus decentralized blob storage** via the **MemWal MCP** server:
 - **Recall Before Answering**: Queries past resolutions (`resolved-{area}`) before deriving fixes from general knowledge.
 - **Store Verified Resolutions**: When an incident is solved, it commits a structured, de-duplicated post-mortem directly to Walrus.
 - **Cross-Channel Continuity**: The same Walrus memory bank powers both the web dashboard and the Telegram bot (`@EazitechSupportBot`).
-- **Vendor-Agnostic Sovereignty**: Switch from Claude to Qwen, Llama, or GPT-4o without losing a single customer ticket or resolution.
+- **Vendor-Agnostic Sovereignty**: Switch from Claude to Qwen, Llama, or GPT-4o without losing a single customer ticket or company resolution.
 
 ---
 
