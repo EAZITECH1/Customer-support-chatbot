@@ -6,18 +6,63 @@ Official Developer Docs: https://docs.wal.app and https://docs.wal.app/walrus-me
 
 ```yaml
 protocol:
-  name: "Walrus Protocol"
-  product: "Decentralized blob storage, data availability, and portable agent memory layer built on Sui."
-  support_scope: "Developer support for building on Walrus and Sui: Walrus CLI usage, SDK & MemWal integration, publisher/aggregator daemon config, storage epochs and renewal, Seal encryption, Sui RPC endpoints, and decentralized agent memory architectures."
+  name: "Walrus Protocol Developer Support"
+  organization: "Walrus Foundation & Mysten Labs"
+  product: "Decentralized blob storage, data availability network, and verifiable agent memory substrate built on Sui."
+  support_scope: >
+    Official developer technical support for building on Walrus and Sui. Covers Walrus CLI 
+    installation and commands (blob store/read/delete), SDK and MemWal MCP integration, 
+    publisher/aggregator daemon architecture, storage epochs and renewal economics, 
+    Seal threshold encryption for private blobs, Sui RPC node configuration, and decentralized 
+    agentic memory patterns. Does not provide speculative token investment or trading advice.
 
-# Security and namespace boundaries
+# Security boundaries and access control tiers
 tiers:
-  tier_1:      { reads: [resolved-*, customer-{id}, open-tickets, product-intel], writes: [resolved-*, customer-{id}, open-tickets] }   # developer-facing support
-  tier_2:      { reads: [resolved-*, customer-{id}, open-tickets, product-intel], writes: [resolved-*, customer-{id}, open-tickets] }   # core protocol engineer / systems specialist
-  lead:        { reads: [resolved-*, customer-{id}, open-tickets, product-intel], writes: [resolved-*, product-intel, open-tickets] }   # protocol architect / escalation
+  tier_1:
+    role: "Developer Support Engineer (L1)"
+    reads: [resolved-*, customer-{id}, open-tickets, product-intel]
+    writes: [resolved-*, customer-{id}, open-tickets]
+    scope: "Live interactive troubleshooting, developer onboarding, CLI & SDK guidance."
+  tier_2:
+    role: "Protocol Systems Specialist (L2)"
+    reads: [resolved-*, customer-{id}, open-tickets, product-intel]
+    writes: [resolved-*, customer-{id}, open-tickets, product-intel]
+    scope: "Storage node daemon failures, complex epoch math, Seal threshold encryption bugs."
+  lead:
+    role: "Protocol Architect / Core Maintainer"
+    reads: [resolved-*, customer-{id}, open-tickets, product-intel]
+    writes: [resolved-*, product-intel, open-tickets]
+    scope: "Protocol-level incidents, relayer updates, hard fork changes, and policy overrides."
 
-product_areas: ["cli", "sdk", "relayer", "epochs", "seal-encryption", "storage-nodes", "aggregator", "billing"]
-memory_owner: "0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4"   # Walrus Developer Support Memory Account
+product_areas:
+  - "cli"               # Walrus binary installation, config.yaml, walrus store/read commands
+  - "sdk"               # @mysten-incubation/memwal, @mysten/walrus JS/TS libraries
+  - "relayer"           # MemWal MCP SSE relayer, connection retries, 503 recovery
+  - "epochs"            # Storage duration, epoch purchase math, extending blob lifetime
+  - "seal-encryption"   # Threshold encryption of sensitive developer data before upload
+  - "storage-nodes"     # Storage node operator daemons, committee sync, sliver health
+  - "aggregator"        # Reading blobs, public gateway caching, content-derived blob IDs
+  - "billing"           # WAL token gas funding, storage payments on Sui Mainnet/Testnet
+
+# On-Chain Sovereign Identity on Sui Mainnet
+memory_owner: "0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4"
+delegate_wallet: "0x3d67903dd4d875d2ebfbba47fed2d7eb09e927e6049374ce7ed522a085577610"
+network: "Sui Mainnet"
+
+# Canonical Knowledge Sources (Documented Ground Truth)
+knowledge_sources:
+  - title: "Walrus Official Documentation"
+    url: "https://docs.wal.app"
+  - title: "Walrus Memory (MemWal) Specification"
+    url: "https://docs.wal.app/walrus-memory"
+  - title: "MemWal AI SDK & MCP Integration Guide"
+    url: "https://docs.wal.app/walrus-memory/sdk/ai-integration"
+  - title: "Sui Network Developer Portal"
+    url: "https://docs.sui.io"
+
+operator:
+  status_sink: "sse_ticker"  # Real-time tool telemetry piped to the browser UI & logs
+  log_level: "info"
 ```
 
 ## Namespaces
