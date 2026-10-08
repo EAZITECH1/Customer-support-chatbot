@@ -4,6 +4,7 @@
 
 const STORAGE_SESSION_KEY = 'eazitech_session_id';
 const STORAGE_HISTORY_KEY = 'eazitech_chat_history';
+const STORAGE_EMAIL_KEY = 'eazitech_dev_email';
 
 const thread = document.getElementById('thread');
 const form = document.getElementById('composer');
@@ -13,9 +14,54 @@ const statusDot = document.getElementById('statusDot');
 const statusText = document.getElementById('statusText');
 const nsLabel = document.getElementById('nsLabel');
 const resetBtn = document.getElementById('reset');
+const devEmailInput = document.getElementById('devEmailInput');
+const getLinkCodeBtn = document.getElementById('getLinkCodeBtn');
+const linkCodeDisplay = document.getElementById('linkCodeDisplay');
 
 let sessionId = loadSessionId();
 let busy = false;
+
+// Initialize email input from localStorage
+if (devEmailInput) {
+  devEmailInput.value = localStorage.getItem(STORAGE_EMAIL_KEY) || '';
+  devEmailInput.addEventListener('change', () => {
+    const val = devEmailInput.value.trim().toLowerCase();
+    if (val) localStorage.setItem(STORAGE_EMAIL_KEY, val);
+    else localStorage.removeItem(STORAGE_EMAIL_KEY);
+  });
+}
+
+if (getLinkCodeBtn) {
+  getLinkCodeBtn.addEventListener('click', async () => {
+    const email = devEmailInput?.value.trim();
+    if (!email) {
+      alert('Please enter your developer email first to generate a link code.');
+      devEmailInput?.focus();
+      return;
+    }
+    try {
+      getLinkCodeBtn.textContent = 'Generating…';
+      const res = await fetch('/api/link/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (data.ok && data.code) {
+        linkCodeDisplay.textContent = `CODE: ${data.code}`;
+        linkCodeDisplay.title = 'Type /link ' + data.code + ' in Telegram (@EazitechSupportBot)';
+        linkCodeDisplay.classList.remove('hidden');
+        systemNote(`📱 One-time Telegram link code: ${data.code} (Send '/link ${data.code}' in @EazitechSupportBot to sync history).`);
+      } else {
+        alert(data.error || 'Failed to generate link code');
+      }
+    } catch (err) {
+      alert('Error: ' + err.message);
+    } finally {
+      getLinkCodeBtn.textContent = '📱 Link Telegram';
+    }
+  });
+}
 
 function newId() {
   return 'sess_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
@@ -172,10 +218,11 @@ async function send(message) {
   let activeChips = new Map(); // tool -> chip element (most recent)
 
   try {
+    const email = devEmailInput?.value.trim() || localStorage.getItem(STORAGE_EMAIL_KEY) || '';
     const res = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sessionId, message }),
+      body: JSON.stringify({ sessionId, message, email }),
     });
     if (!res.ok || !res.body) throw new Error('HTTP ' + res.status);
 

@@ -11,6 +11,7 @@ import { MemWal, summarizeToolResult } from './memwal.js';
 import { LLM } from './llm.js';
 import { SessionStore } from './store.js';
 import { materializeCredentials } from './credentials.js';
+import { linkManager } from './link.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -182,11 +183,37 @@ async function sendMessage(chatId, text) {
 async function handleUserMessage(chatId, userId, username, text) {
   if (text === '/start') {
     const welcome =
-      `👋 *Welcome to EAZITECH Customer Support*\n\n` +
-      `I am your dedicated customer support chatbot with persistent institutional memory on *Walrus*.\n\n` +
-      `How can I assist you with your project deliverables, video exports, content, or technical setup today?\n\n` +
-      `_(Type /reset at any time to start a fresh support ticket)_`;
+      `👋 *Welcome to Walrus Protocol Developer Support*\n\n` +
+      `I am your dedicated developer support assistant with persistent institutional memory on *Walrus*.\n\n` +
+      `Ask me anything about Walrus CLI, SDK integration, storage epochs, Seal encryption, or daemon configuration!\n\n` +
+      `🔗 *Cross-Channel Link*: If you started on the Web Support Portal, type:\n\`/link WAL-XXXX\`\nto sync your open tickets and history.\n\n` +
+      `_(Type /reset at any time to start a fresh ticket)_`;
     await sendMessage(chatId, welcome);
+    return;
+  }
+
+  if (text.startsWith('/link')) {
+    const parts = text.trim().split(/\s+/);
+    if (parts.length < 2) {
+      await sendMessage(
+        chatId,
+        `⚠️ *Usage*: \`/link WAL-XXXX\`\n\nGenerate your 6-digit link code on the Web Portal, then paste it here to link your account.`
+      );
+      return;
+    }
+    const code = parts[1];
+    const res = linkManager.redeemCode(code, { id: userId, chatId, username });
+    if (res.ok) {
+      await sendMessage(
+        chatId,
+        `✅ *Identity Linked Successfully!*\n\n` +
+        `• *Developer Email*: \`${res.email}\`\n` +
+        `• *Tenant*: \`${res.tenant}\`\n\n` +
+        `Your open tickets and context from the Web Portal are now synchronized to this chat!`
+      );
+    } else {
+      await sendMessage(chatId, `❌ *Link Failed*: ${res.error}`);
+    }
     return;
   }
 
@@ -205,8 +232,15 @@ async function handleUserMessage(chatId, userId, username, text) {
     const system = loadSystemPrompt();
     const session = store.get(sessionId);
 
-    // Identify user in transcript if known
-    const customerTag = username ? `[Telegram User: @${username} (id: ${userId})] ` : `[Telegram User ID: ${userId}] `;
+    // Check if this Telegram user has linked their web identity
+    const identity = linkManager.getIdentityByTelegramId(userId);
+    let customerTag = '';
+    if (identity) {
+      customerTag = `[Developer: ${identity.email} (Tenant: ${identity.tenant}, Telegram: @${username || userId})] `;
+    } else {
+      customerTag = username ? `[Telegram User: @${username} (id: ${userId})] ` : `[Telegram User ID: ${userId}] `;
+    }
+
     const transcript = session.messages.slice();
     transcript.push({ role: 'user', content: customerTag + text });
 

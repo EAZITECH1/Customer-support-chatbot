@@ -187,9 +187,26 @@ function argsPreview(name, args) {
 }
 
 // ── App ───────────────────────────────────────────────────────────────────────
+import { linkManager } from './link.js';
+
 const app = express();
 app.use(express.json({ limit: '1mb' }));
 app.use(express.static(PUBLIC_DIR));
+
+// Identity Link Code Generation for Web <-> Telegram cross-channel sync
+app.post('/api/link/generate', (req, res) => {
+  const { email, tenant } = req.body || {};
+  if (!email) {
+    res.status(400).json({ error: 'Email is required to generate a link code' });
+    return;
+  }
+  try {
+    const link = linkManager.generateCode(email, tenant);
+    res.json({ ok: true, ...link });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 app.get('/api/health', (_req, res) => {
   const prompt = loadSystemPrompt();
@@ -205,7 +222,7 @@ app.get('/api/health', (_req, res) => {
       error: memwalError,
     },
     llm: { baseUrl: llm.baseUrl, model: llm.model, configured: llm.configured },
-    systemPrompt: { file: 'support-bot-prompt.md', found: prompt.found },
+    systemPrompt: { file: 'support-agent-prompt.md', found: prompt.found },
   });
 });
 
@@ -216,7 +233,7 @@ app.post('/api/reset', (req, res) => {
 });
 
 app.post('/api/chat', async (req, res) => {
-  const { sessionId, message } = req.body || {};
+  const { sessionId, message, email } = req.body || {};
   if (!sessionId || !message) {
     res.status(400).json({ error: 'sessionId and message are required' });
     return;
@@ -238,7 +255,8 @@ app.post('/api/chat', async (req, res) => {
     const system = loadSystemPrompt().text;
     const session = store.get(sessionId);
     const transcript = session.messages.slice(); // OpenAI-format msgs, no system
-    transcript.push({ role: 'user', content: message });
+    const userTag = email ? `[Developer: ${email.trim()}] ` : '';
+    transcript.push({ role: 'user', content: userTag + message });
 
     // Recover memory if a transient relayer outage dropped it since boot.
     await ensureMemWal();

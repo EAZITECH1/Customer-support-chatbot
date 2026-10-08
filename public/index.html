@@ -14,9 +14,9 @@
   </head>
   <body>
     <div class="frame">
-      <!-- Top bar — echoes the site's wordmark + "AVAILABLE FOR COLLABS" -->
+      <!-- Top bar — echoes the site's wordmark + status -->
       <header class="topbar">
-        <div class="brand">EAZIT<span class="xi">Ξ</span>CH</div>
+        <div class="brand">WALRUS <span class="xi">DEV</span> SUPPORT</div>
         <div class="status">
           <span class="dot" id="statusDot"></span>
           <span id="statusText">CONNECTING…</span>
@@ -25,14 +25,26 @@
 
       <!-- Numbered editorial label strip -->
       <div class="eyebrow">
-        <span>00 · CUSTOMER SUPPORT CHATBOT</span>
+        <span>00 · DEVELOPER SUPPORT CHATBOT</span>
         <span class="sep">/</span>
-        <span>MEMORY ON WALRUS</span>
+        <span>SOVEREIGN MEMORY ON WALRUS</span>
         <span class="sep">/</span>
         <span id="nsLabel">NS · support</span>
       </div>
 
-      <!-- Serif display headline, like the hero -->
+      <!-- Developer Identity & Telegram Link Strip -->
+      <div class="identity-strip" id="identityStrip">
+        <div class="dev-badge">
+          <span class="badge-icon">⚡</span>
+          <input type="email" id="devEmailInput" class="dev-email-input" placeholder="Enter developer email..." />
+        </div>
+        <div class="link-actions">
+          <button type="button" id="getLinkCodeBtn" class="link-btn">📱 Link Telegram</button>
+          <span id="linkCodeDisplay" class="link-code-pill hidden"></span>
+        </div>
+      </div>
+
+      <!-- Serif display headline -->
       <h1 class="display">How can we<br />help<span class="period">.</span></h1>
 
       <!-- Chat transcript -->
