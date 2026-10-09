@@ -17,7 +17,7 @@ import { dirname, join } from 'node:path';
 
 import { MemWal, summarizeToolResult } from './memwal.js';
 import { LLM } from './llm.js';
-import { SessionStore } from './store.js';
+import { SessionStore, pruneTranscript } from './store.js';
 import { materializeCredentials } from './credentials.js';
 import { startTelegramBot } from './telegram.js';
 
@@ -254,7 +254,7 @@ app.post('/api/chat', async (req, res) => {
   try {
     const system = loadSystemPrompt().text;
     const session = store.get(sessionId);
-    const transcript = session.messages.slice(); // OpenAI-format msgs, no system
+    const transcript = pruneTranscript(session.messages.slice()); // OpenAI-format msgs, no system
     const userTag = email ? `[Developer: ${email.trim()}] ` : '';
     transcript.push({ role: 'user', content: userTag + message });
 
@@ -271,7 +271,7 @@ app.post('/api/chat', async (req, res) => {
       sse(res, 'agent_status', { phase: 'thinking' });
 
       const assistant = await llm.complete({
-        messages: [{ role: 'system', content: system }, ...transcript],
+        messages: [{ role: 'system', content: system }, ...pruneTranscript(transcript)],
         tools,
       });
 
@@ -332,10 +332,11 @@ app.post('/api/chat', async (req, res) => {
           blobId: summary.blobId,
         });
 
+        const safeToolText = (result.text || (result.ok ? 'ok' : 'error')).slice(0, 10000);
         transcript.push({
           role: 'tool',
           tool_call_id: tc.id,
-          content: result.text || (result.ok ? 'ok' : 'error'),
+          content: safeToolText,
         });
       }
     }
@@ -344,7 +345,7 @@ app.post('/api/chat', async (req, res) => {
     if (finalText === null) {
       sse(res, 'agent_status', { phase: 'thinking' });
       const forced = await llm.complete({
-        messages: [{ role: 'system', content: system }, ...transcript],
+        messages: [{ role: 'system', content: system }, ...pruneTranscript(transcript)],
         // no tools -> model must produce prose
       });
       finalText = forced.content || '(no response)';

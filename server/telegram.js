@@ -9,7 +9,7 @@ import { dirname, join } from 'node:path';
 
 import { MemWal, summarizeToolResult } from './memwal.js';
 import { LLM } from './llm.js';
-import { SessionStore } from './store.js';
+import { SessionStore, pruneTranscript } from './store.js';
 import { materializeCredentials } from './credentials.js';
 import { linkManager } from './link.js';
 
@@ -247,7 +247,7 @@ async function handleUserMessage(chatId, userId, username, text) {
       customerTag = username ? `[Telegram User: @${username} (id: ${userId})] ` : `[Telegram User ID: ${userId}] `;
     }
 
-    const transcript = session.messages.slice();
+    const transcript = pruneTranscript(session.messages.slice());
     transcript.push({ role: 'user', content: customerTag + text });
 
     if (activeEnsureMemWal) {
@@ -264,7 +264,7 @@ async function handleUserMessage(chatId, userId, username, text) {
       sendTyping(chatId);
 
       const assistant = await curLlm.complete({
-        messages: [{ role: 'system', content: system }, ...transcript],
+        messages: [{ role: 'system', content: system }, ...pruneTranscript(transcript)],
         tools,
       });
 
@@ -307,17 +307,18 @@ async function handleUserMessage(chatId, userId, username, text) {
           result = { ok: false, text: `Unknown tool: ${name}` };
         }
 
+        const safeToolText = (result.text || (result.ok ? 'ok' : 'error')).slice(0, 10000);
         transcript.push({
           role: 'tool',
           tool_call_id: tc.id,
-          content: result.text || (result.ok ? 'ok' : 'error'),
+          content: safeToolText,
         });
       }
     }
 
     if (finalText === null) {
       const forced = await curLlm.complete({
-        messages: [{ role: 'system', content: system }, ...transcript],
+        messages: [{ role: 'system', content: system }, ...pruneTranscript(transcript)],
       });
       finalText = forced.content || 'I have recorded your issue and am reviewing past resolutions.';
     }

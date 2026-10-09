@@ -47,7 +47,7 @@ export class SessionStore {
   /** Replace a session's message list (the model transcript) and persist. */
   setMessages(id, messages) {
     const s = this.get(id);
-    s.messages = messages;
+    s.messages = pruneTranscript(messages);
     this._persist();
   }
 
@@ -55,4 +55,37 @@ export class SessionStore {
     this.sessions.set(id, { messages: [], createdAt: Date.now() });
     this._persist();
   }
+}
+
+/**
+ * Safely prunes a message transcript to prevent exceeding model context windows (e.g. 32k tokens).
+ * Drops whole older turns (user -> assistant -> tool) to avoid leaving orphaned tool messages.
+ */
+export function pruneTranscript(messages, maxTotalChars = 32000, maxMessages = 16) {
+  if (!Array.isArray(messages) || messages.length <= 2) return messages;
+
+  let totalChars = messages.reduce(
+    (acc, m) => acc + (typeof m.content === 'string' ? m.content.length : 0),
+    0
+  );
+  if (totalChars <= maxTotalChars && messages.length <= maxMessages) return messages;
+
+  const userIndices = [];
+  for (let i = 0; i < messages.length; i++) {
+    if (messages[i].role === 'user') userIndices.push(i);
+  }
+
+  // Keep at least the latest user turn
+  while (userIndices.length > 1 && (totalChars > maxTotalChars || messages.length > maxMessages)) {
+    const nextUserIdx = userIndices[1];
+    messages.splice(0, nextUserIdx);
+    userIndices.shift();
+    for (let i = 0; i < userIndices.length; i++) userIndices[i] -= nextUserIdx;
+    totalChars = messages.reduce(
+      (acc, m) => acc + (typeof m.content === 'string' ? m.content.length : 0),
+      0
+    );
+  }
+
+  return messages;
 }

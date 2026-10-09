@@ -146,7 +146,7 @@ export class MemWal {
    * Execute one tool call against the MemWal MCP server.
    * Returns { ok, text, raw } — `text` is a string safe to feed back to the model.
    */
-  async call(name, args) {
+  async call(name, args, retry = true) {
     if (!this.isMemoryTool(name)) {
       return { ok: false, text: `Unknown tool: ${name}`, raw: null };
     }
@@ -154,9 +154,17 @@ export class MemWal {
     const finalArgs = { namespace: this.namespace, ...(args || {}) };
     try {
       const res = await this.client.callTool({ name, arguments: finalArgs });
+      if (res?.isError && retry) {
+        await new Promise((r) => setTimeout(r, 800));
+        return this.call(name, args, false);
+      }
       const text = flattenContent(res?.content);
       return { ok: !res?.isError, text, raw: res };
     } catch (err) {
+      if (retry) {
+        await new Promise((r) => setTimeout(r, 800));
+        return this.call(name, args, false);
+      }
       return { ok: false, text: `Tool error: ${err?.message || String(err)}`, raw: null };
     }
   }
