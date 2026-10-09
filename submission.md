@@ -12,7 +12,7 @@
 | **Total Blobs on Walrus** | 15+ blobs committed across `support`, `open-tickets`, `product-intel` |
 | **Telegram Bot (24/7)** | [@EazitechSupportBot](https://t.me/EazitechSupportBot) |
 | **Web Application** | [https://eazitech-support.onrender.com](https://eazitech-support.onrender.com) |
-| **Written Article** | [`article.html`](article.html) (Ready for Medium & Inkray publication) |
+| **Written Article** | [Published on Medium: How I Built a Self-Learning Developer Assistant on Walrus Memory](https://medium.com/@ajayiisrael523/how-i-built-a-self-learning-developer-assistant-on-walrus-memory-c6bcb9e08f7b) (Local HTML: [`article.html`](article.html)) |
 | **Repository** | [https://github.com/EAZITECH1/Customer-support-chatbot](https://github.com/EAZITECH1/Customer-support-chatbot) |
 
 ---
@@ -39,4 +39,4 @@ Deployed 24/7 across two unified channels:
 - [x] **On-Chain Mainnet Evidence**: 15+ blobs committed to Walrus Mainnet under account [`0xf6b75c6f…3175d4`](https://suiscan.xyz/mainnet/object/0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4)
 - [x] **Full Copy-Pasteable Prompt & Template**: [`support-agent-prompt.md`](support-agent-prompt.md) and [`support-agent-prompt.template.md`](support-agent-prompt.template.md)
 - [x] **Evidence of Real Use**: Screen recordings across Web and Telegram demonstrating real-world learning and recall
-- [x] **Written Article**: Complete, formatted article ready for publication ([`article.html`](article.html))
+- [x] **Written Article**: Published on Medium: [How I Built a Self-Learning Developer Assistant on Walrus Memory](https://medium.com/@ajayiisrael523/how-i-built-a-self-learning-developer-assistant-on-walrus-memory-c6bcb9e08f7b) (Local: [`article.html`](article.html))
