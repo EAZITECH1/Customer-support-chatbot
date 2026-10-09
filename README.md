@@ -51,7 +51,6 @@ Walrus Dev Support is an autonomous developer support chatbot strictly grounded 
 - **Live 24/7 Telegram Bot**: [@EazitechSupportBot](https://t.me/EazitechSupportBot)
 - **Public GitHub Repository**: [EAZITECH1/Customer-support-chatbot](https://github.com/EAZITECH1/Customer-support-chatbot)
 - **Published Article (Medium)**: [How I Built a Self-Learning Developer Assistant on Walrus Memory](https://medium.com/@ajayiisrael523/how-i-built-a-self-learning-developer-assistant-on-walrus-memory-c6bcb9e08f7b)
-- **Article & Walkthrough (Local HTML)**: [`article.html`](article.html)
 
 ---
 
