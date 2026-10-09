@@ -3,13 +3,13 @@
 // Works with Ollama, LM Studio, OpenRouter, Groq, Together, vLLM, etc.
 
 export class LLM {
-  constructor({ baseUrl, apiKey, model, temperature = 0.3 }) {
+  constructor({ baseUrl, apiKey, model, temperature = 0.1 }) {
     // Don't throw here — let the server boot and serve the UI / MemWal even
     // before the model is configured. We validate on first use in complete().
     this.baseUrl = (baseUrl || '').replace(/\/+$/, '');
     this.apiKey = apiKey || 'local';
     this.model = model || '';
-    this.temperature = Number(temperature);
+    this.temperature = Number(temperature ?? 0.1);
   }
 
   get configured() {
