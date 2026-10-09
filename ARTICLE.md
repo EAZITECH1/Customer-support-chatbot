@@ -171,25 +171,7 @@ This confirmed that Walrus Dev Support accumulates solutions across multiple pil
 
 ---
 
-## 5. On-Chain Telemetry & Proofs (Sui Mainnet)
-
-Every memory transaction from our sessions is anchored directly to Sui and Walrus Mainnet:
-
-- **Sui Mainnet MemWalAccount Object**:  
-  [`0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4`](https://suiscan.xyz/mainnet/object/0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4)
-- **Dedicated Agent Delegate Address**:  
-  `0x3d67903dd4d875d2ebfbba47fed2d7eb09e927e6049374ce7ed522a085577610`
-- **Total Memory Blobs Committed**:  
-  **15+ Blobs** verified and inspectable on Walruscan.
-- **Sample Verified Walruscan Blobs**:
-  - [`vPVfOyZZd8U7MUW1IxX6aPBSxRdcBeLCwcbbz7CjUFA`](https://walruscan.com/mainnet/blob/vPVfOyZZd8U7MUW1IxX6aPBSxRdcBeLCwcbbz7CjUFA)
-  - [`7Yxc8cjqpxmjS-GrVsFqFfPDNXo_mkazOLz451gASPI`](https://walruscan.com/mainnet/blob/7Yxc8cjqpxmjS-GrVsFqFfPDNXo_mkazOLz451gASPI)
-
-Because memories are stored as decentralized Walrus blobs, our assistant can reboot, redeploy, or switch LLM providers entirely without losing a single byte of developer intelligence.
-
----
-
-## 6. Engineering Challenges & Lessons Learned
+## 5. Engineering Challenges & Lessons Learned
 
 During the hackathon, building production-grade agentic memory exposed three critical technical challenges:
 
@@ -206,20 +188,7 @@ The system prompt encourages the model to organize resolutions into topic partit
 
 ---
 
-## 7. Feedback for the Mysten Labs & Walrus Team
-
-Building on `@mysten-incubation/memwal-mcp` (v0.0.7) was a fantastic experience. Based on our production deployment, we propose three suggestions for the SDK roadmap:
-
-1. **Direct Blob ID in MCP Return Payload**:  
-   `memwal_remember` returns text confirmation, but exposing the exact Walrus Blob ID (`blobId`) directly in the structured JSON tool result allows frontends to render clickable `walruscan.com/blob/{id}` verification badges instantly.
-2. **Headless / Containerized Credential Injection**:  
-   The current MCP server defaults to reading `~/.memwal/credentials.json`. For cloud environments (Render, AWS, Docker), having first-class support for `MEMWAL_PRIVATE_KEY` or `MEMWAL_CREDENTIALS_JSON` environment variables simplifies deployment pipelines.
-3. **Namespace Listing / Inspection Tool**:  
-   Adding a `memwal_list_namespaces` or count probe would enable AI agents to perform dynamic partition discovery without requiring hardcoded schema assumptions.
-
----
-
-## 8. Try the Live Demo & Source Code
+## 6. Try the Live Demo & Source Code
 
 The full project is open-source and live:
 
@@ -229,4 +198,16 @@ The full project is open-source and live:
 - **Studio Website**: [https://eazitech.xyz](https://eazitech.xyz)
 - **Screen Recording Demos**: Tested live on October 9, 2026.
 
-With Walrus Memory, AI agents no longer suffer from amnesia. They become permanent, decentralized knowledge engines that make developer communities smarter with every ticket they solve.
+---
+
+## 7. Conclusion: Sovereign Memory for the Next Generation of AI Agents
+
+The generative AI revolution has solved fluent reasoning, but it left agents stateless. Today, the single biggest bottleneck to deploying autonomous agents in mission-critical environments is **amnesia**.
+
+By coupling decentralized blob storage on **Walrus** with the **MemWal Model Context Protocol**, we demonstrated that an AI support agent can evolve from an amnesiac conversationalist into a self-compounding institutional knowledge engine:
+
+- **It remembers real solutions** discovered through developer problem-solving.
+- **It breaks channel silos**, seamlessly linking a Web browser to a Telegram chat.
+- **It protects data sovereignty**, anchoring developer knowledge as immutable, verifiable blobs on Sui rather than proprietary corporate silos.
+
+With Walrus Memory, AI agents no longer start from zero. Every solved bug, every confirmed runbook, and every developer interaction makes the ecosystem permanently smarter.
