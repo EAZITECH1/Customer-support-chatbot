@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| **Project** | **Walrus Dev Support** — Autonomous Developer Assistant on Walrus Memory |
+| **Project** | **Walrus Dev Support** — Autonomous Developer Assistant chatbot on Walrus Memory |
 | **System Prompt** | Production prompt: [`support-agent-prompt.md`](support-agent-prompt.md) (Template: [`support-agent-prompt.template.md`](support-agent-prompt.template.md)) |
 | **MemWalAccount Object** | [`0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4`](https://suiscan.xyz/mainnet/object/0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4) (Sui Mainnet Shared Object) |
 | **Delegate Account** | `0x3d67903dd4d875d2ebfbba47fed2d7eb09e927e6049374ce7ed522a085577610` |
@@ -19,9 +19,9 @@
 
 ## What It Is
 
-**Walrus Dev Support** is an autonomous, self-learning developer support assistant built specifically for the **Walrus and Sui ecosystem**. 
+**Walrus Dev Support** is an autonomous, self-learning developer support assistant chatbot built specifically for the **Walrus and Sui ecosystem**. 
 
-Unlike conventional support chatbots that suffer from session amnesia or lock developer intelligence inside proprietary SaaS databases, this assistant turns every verified technical problem into an immutable, structured runbook owned by the ecosystem and stored on **Walrus**.
+Unlike conventional support chatbots that suffer from session amnesia or lock developer intelligence inside proprietary SaaS databases, this chatbot turns every verified technical problem into an immutable, structured runbook owned by the ecosystem and stored on **Walrus**.
 
 When a developer encounters an issue (such as Sui gas coin fragmentation during `walrus store` or empty `memwal_recall` query namespaces), the agent queries Walrus Memory (`memwal_recall`) before diagnosing. When the developer verifies the fix, it commits a structured post-mortem to Walrus on Sui Mainnet via `memwal_remember`.
 

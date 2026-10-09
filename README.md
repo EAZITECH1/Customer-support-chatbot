@@ -1,7 +1,7 @@
-# Walrus Dev Support — Autonomous Developer Assistant on Walrus Memory
+# Walrus Dev Support — Autonomous Developer Assistant chatbot on Walrus Memory
 
 > **Built for "Walrus Sessions: Chatbots That Remember" (Hackathon Submission — October 2026)**  
-> An autonomous, self-learning developer support assistant for the **Walrus & Sui ecosystem**, powered by **Walrus Memory (MemWal MCP)** on **Sui Mainnet** and **Google Gemini 2.5 Flash**.  
+> An autonomous, self-learning developer support assistant chatbot for the **Walrus & Sui ecosystem**, powered by **Walrus Memory (MemWal MCP)** on **Sui Mainnet** and **Google Gemini 2.5 Flash**.  
 > Delivered across two unified surfaces: a high-performance **Web Portal** and a **24/7 Telegram Bot** ([@WalrusSupportBot](https://t.me/EazitechSupportBot)).
 
 ---
@@ -24,8 +24,8 @@ Traditional AI support chatbots suffer from **complete session amnesia**:
 
 **Walrus Dev Support** transforms how developer ecosystems retain and share knowledge by using **Walrus decentralized blob storage** via the **MemWal MCP** protocol:
 
-- **Recall Before Answering (`memwal_recall`)**: The assistant searches past verified technical runbooks on Walrus before attempting to synthesize speculative code.
-- **Structured Ingestion (`memwal_remember`)**: When an issue is confirmed resolved by a developer, the assistant converts the fix into an immutable structured post-mortem and commits it directly to Sui Mainnet.
+- **Recall Before Answering (`memwal_recall`)**: The assistant chatbot searches past verified technical runbooks on Walrus before attempting to synthesize speculative code.
+- **Structured Ingestion (`memwal_remember`)**: When an issue is confirmed resolved by a developer, the assistant chatbot converts the fix into an immutable structured post-mortem and commits it directly to Sui Mainnet.
 - **Cross-Channel Parity**: A solution learned on the Web Portal is instantly searchable on Telegram, and vice versa.
 - **Sovereign & Decentralized**: The knowledge base is anchored as decentralized blobs on Walrus, owned by the project's own Sui wallet. Models can be swapped on the fly with zero memory loss.
 
@@ -33,7 +33,7 @@ Traditional AI support chatbots suffer from **complete session amnesia**:
 
 ## 3. The 5 Ecosystem Pillars Supported
 
-Walrus Dev Support is strictly grounded across all five official documentation pillars:
+Walrus Dev Support is an autonomous developer support chatbot strictly grounded across all five official documentation pillars:
 
 | Pillar | Focus Areas & Diagnostics |
 | :--- | :--- |
@@ -76,7 +76,7 @@ The live memory lifecycle was recorded end-to-end on October 9, 2026:
 * **Prompt**:
   > *"I am trying to run `walrus store backup.tar.gz --epochs 5`, but the CLI fails with `Error: Insufficient gas coins to cover storage and gas fees`, even though my Sui wallet balance has 10 SUI. What is causing this?"*
 * **What Happened**:
-  1. Assistant queries `memwal_recall` on Walrus (`recalling past resolutions… · support`).
+  1. Assistant chatbot queries `memwal_recall` on Walrus (`recalling past resolutions… · support`).
   2. Diagnoses that 10 SUI is fragmented into small coins; Sui requires a single coin large enough to cover the storage deposit + execution budget.
   3. Provides the fix: `sui client gas merge-coins --primary-coin <YOUR_LARGEST_COIN_ID> --all`.
   4. Developer confirms the command succeeded, and requests to remember it.

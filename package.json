@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Autonomous Developer Support Assistant for the Walrus & Sui ecosystem, powered by Walrus Memory (MemWal MCP) and LLMs.",
+  "description": "Autonomous Developer Assistant chatbot for the Walrus & Sui ecosystem, powered by Walrus Memory (MemWal MCP) and LLMs.",
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",

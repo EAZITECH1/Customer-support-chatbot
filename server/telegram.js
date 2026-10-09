@@ -184,7 +184,7 @@ async function handleUserMessage(chatId, userId, username, text) {
   if (text === '/start') {
     const welcome =
       `👋 *Welcome to Walrus Ecosystem Support (Community Assistant)*\n\n` +
-      `I am a community developer assistant with persistent memory powered by *Walrus Memory*.\n\n` +
+      `I am a community developer assistant chatbot with persistent memory powered by *Walrus Memory*.\n\n` +
       `I support the full Walrus stack across all 5 official pillars:\n` +
       `• *Walrus*: Core storage infrastructure, CLI, and blobs\n` +
       `• *Walrus Memory*: MemWal MCP agent memory & Seal encryption\n` +
