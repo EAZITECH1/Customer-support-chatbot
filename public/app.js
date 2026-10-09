@@ -123,16 +123,60 @@ async function refreshHealth() {
   }
 }
 
+// Simple clean markdown parser for chat bubbles
+function formatMarkdown(raw) {
+  if (!raw) return '';
+  // Escape basic HTML
+  let s = raw
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  // Code blocks: ```code```
+  s = s.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+
+  // Inline code: `code`
+  s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+  // Headings: ### Header, ## Header, # Header
+  s = s.replace(/^### (.*$)/gim, '<div class="md-h3">$1</div>');
+  s = s.replace(/^## (.*$)/gim, '<div class="md-h2">$1</div>');
+  s = s.replace(/^# (.*$)/gim, '<div class="md-h1">$1</div>');
+
+  // Bold: **text**
+  s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+  // Italics: *text* or _text_
+  s = s.replace(/(^|[^\*])\*([^\*]+)\*([^\*]|$)/g, '$1<em>$2</em>$3');
+
+  // Bullet points
+  s = s.replace(/^\s*-\s+(.*$)/gim, '<div class="md-li">• $1</div>');
+  s = s.replace(/^\s*\*\s+(.*$)/gim, '<div class="md-li">• $1</div>');
+
+  // Numbered lists: 1. text
+  s = s.replace(/^\s*(\d+)\.\s+(.*$)/gim, '<div class="md-li"><span class="md-num">$1.</span> $2</div>');
+
+  // Paragraph line breaks
+  s = s.replace(/\n\n+/g, '<div class="md-spacer"></div>');
+  s = s.replace(/\n/g, '<br/>');
+
+  return s;
+}
+
 // ── Rendering ──────────────────────────────────────────────
 function addMsg(role, text, save = true) {
   const el = document.createElement('div');
   el.className = 'msg ' + (role === 'user' ? 'user' : 'bot');
   const who = document.createElement('div');
   who.className = 'who';
-  who.textContent = role === 'user' ? 'You' : 'EAZITECH Support';
+  who.textContent = role === 'user' ? 'You' : 'Walrus Support';
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
-  bubble.textContent = text;
+  if (role === 'bot') {
+    bubble.innerHTML = formatMarkdown(text);
+  } else {
+    bubble.textContent = text;
+  }
   el.append(who, bubble);
   thread.appendChild(el);
   scroll();

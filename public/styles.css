@@ -197,11 +197,69 @@ body {
 }
 .msg .bubble {
   font-size: 14px;
-  line-height: 1.55;
+  line-height: 1.6;
   padding: 13px 16px;
   border-radius: 16px;
-  white-space: pre-wrap;
   word-wrap: break-word;
+}
+
+/* Markdown typography inside bubbles */
+.msg .bubble strong {
+  font-weight: 700;
+  color: var(--ink);
+}
+.msg.user .bubble strong {
+  color: var(--white);
+}
+.msg .bubble .md-h1,
+.msg .bubble .md-h2,
+.msg .bubble .md-h3 {
+  font-family: var(--serif);
+  color: var(--ink);
+  margin-top: 10px;
+  margin-bottom: 4px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+.msg .bubble .md-h1 { font-size: 18px; }
+.msg .bubble .md-h2 { font-size: 16px; }
+.msg .bubble .md-h3 { font-size: 15px; }
+.msg .bubble .md-li {
+  margin: 3px 0;
+  padding-left: 4px;
+}
+.msg .bubble .md-num {
+  font-weight: 700;
+  opacity: 0.9;
+}
+.msg .bubble .md-spacer {
+  height: 8px;
+}
+.msg .bubble code {
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 2px 5px;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 3px;
+}
+.msg.user .bubble code {
+  background: rgba(255, 255, 255, 0.15);
+}
+.msg .bubble pre {
+  margin: 8px 0;
+  padding: 10px 12px;
+  background: #111;
+  color: #eee;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.4;
+}
+.msg .bubble pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
 }
 
 /* customer — black pill, like the site's "LET'S TALK" button */
@@ -220,8 +278,7 @@ body {
   border-radius: 16px 16px 16px 4px;
 }
 .msg.bot .who::before {
-  content: "Ξ ";
-  font-family: var(--serif);
+  content: "⚡ ";
   color: var(--ink);
 }
 
