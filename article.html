@@ -225,6 +225,12 @@
     <h2>3. Before vs. After Walrus Memory: How Chatbot Behavior Transformed</h2>
     <p>A key requirement of building memory-enabled AI is proving that memory fundamentally transforms agent behavior rather than acting as a cosmetic add-on. Here is how our support bot behaves before and after integrating Walrus Memory:</p>
 
+    <!-- Visual Table Image (Recommended for Medium Drag & Drop) -->
+    <div style="margin: 24px 0; text-align: center;">
+      <img src="before-after-comparison-table.png" alt="Before vs. After Walrus Memory: How Chatbot Behavior Transformed" style="width: 100%; max-width: 860px; border-radius: 8px; border: 1px solid #e1e4e8; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+      <p style="font-size: 13.5px; color: #666; font-style: italic; margin-top: 8px;">Figure: Capability comparison of the developer assistant before and after decentralized Walrus Memory.</p>
+    </div>
+
     <table>
       <thead>
         <tr>
@@ -261,6 +267,41 @@
         </tr>
       </tbody>
     </table>
+
+    <!-- Medium-Native Text Breakdown (Since Medium strips HTML tables upon paste) -->
+    <div style="background: #fdfdfd; border-left: 3px solid #0366d6; padding: 12px 18px; margin: 24px 0; border-radius: 0 6px 6px 0;">
+      <h3 style="margin-top: 0; font-size: 18px;">Detailed Capability Breakdown:</h3>
+      
+      <h4>1. Session Continuity</h4>
+      <ul>
+        <li><strong>Before Walrus Memory (Stateless LLM):</strong> <em>Total Amnesia.</em> Refreshing the page or starting a new session wiped all context.</li>
+        <li><strong>After Walrus Memory (MemWal on Sui):</strong> <em>Persistent Institutional Knowledge.</em> Past resolutions are recalled across separate sessions and devices.</li>
+      </ul>
+
+      <h4>2. Cross-Channel Parity</h4>
+      <ul>
+        <li><strong>Before Walrus Memory (Stateless LLM):</strong> <em>Siloed.</em> Web chat had no connection to Telegram (<code>@WalrusSupportBot</code>).</li>
+        <li><strong>After Walrus Memory (MemWal on Sui):</strong> <em>Unified Sovereign Memory.</em> A solution confirmed on the Web is instantly recalled on Telegram.</li>
+      </ul>
+
+      <h4>3. Handling Known Bugs</h4>
+      <ul>
+        <li><strong>Before Walrus Memory (Stateless LLM):</strong> <em>Repetitive Interrogation.</em> Asks every developer the same 5 diagnostic questions every single time.</li>
+        <li><strong>After Walrus Memory (MemWal on Sui):</strong> <em>Instant Solution Delivery.</em> Identifies known symptoms and serves the verified runbook immediately in &lt;2 seconds.</li>
+      </ul>
+
+      <h4>4. Response Reliability</h4>
+      <ul>
+        <li><strong>Before Walrus Memory (Stateless LLM):</strong> <em>Hallucination Risk.</em> Synthesizes generic guesses or fake CLI flags when uncertain.</li>
+        <li><strong>After Walrus Memory (MemWal on Sui):</strong> <em>Strict Grounding.</em> High-confidence answers backed by on-chain verified post-mortems (<em>recalled past resolutions</em>).</li>
+      </ul>
+
+      <h4>5. Data Sovereignty</h4>
+      <ul>
+        <li><strong>Before Walrus Memory (Stateless LLM):</strong> <em>Vendor-Locked.</em> Memory locked in proprietary SaaS databases or third-party AI APIs.</li>
+        <li><strong>After Walrus Memory (MemWal on Sui):</strong> <em>Decentralized &amp; Portable.</em> Stored as immutable blobs on Walrus, owned by the project's own Sui wallet.</li>
+      </ul>
+    </div>
 
     <hr>
 
@@ -333,7 +374,7 @@
     <p>Instead of asking for CLI versions or coin breakdowns, the bot instantly retrieves the verified fix committed during the earlier web interaction:</p>
     <blockquote>
       <strong>Bot:</strong><br>
-      <em>“This is a known issue related to how the Sui network handles gas coins. Even if you have enough total SUI balance, the <code>walrus store` command might fail if your SUI is fragmented into many small coins. The Sui network requires a single gas coin with a balance large enough to cover both the storage deposit and the transaction execution budget.<br><br>
+      <em>“This is a known issue related to how the Sui network handles gas coins. Even if you have enough total SUI balance, the <code>walrus store</code> command might fail if your SUI is fragmented into many small coins. The Sui network requires a single gas coin with a balance large enough to cover both the storage deposit and the transaction execution budget.<br><br>
       The fix is to merge your smaller SUI coins into a larger one. You can do this using the <code>sui client gas merge-coins</code> command.<br><br>
       For example, to merge all your available coins into a primary coin, you can use:<br>
       <code>sui client gas merge-coins --primary-coin &lt;COIN_ID_1&gt; --all</code><br><br>
