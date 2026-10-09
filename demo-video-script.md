@@ -1,6 +1,7 @@
 # 🎬 Demo Video Production Script & ElevenLabs Voiceover
 **Project:** Walrus Dev Support — Autonomous Developer Assistant chatbot on Walrus Memory  
 **Event:** Walrus Sessions Hackathon: Chatbots That Remember  
+**YouTube Video:** [https://youtu.be/V6wrIK1P5SI](https://youtu.be/V6wrIK1P5SI)  
 **Video Sequence:** 1. Web Chat (First) → 2. Telegram UI (Second) → 3. GitHub Repo Scroll Through (Last)  
 **Estimated Runtime:** ~2 Minutes 15 Seconds (approx. 330 words)  
 
