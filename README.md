@@ -224,7 +224,6 @@ npm start
 │   ├── memwal-login.js     # CLI helper for one-time Sui wallet authorization
 │   └── smoke-memwal.js     # Direct Walrus write/read verification script
 ├── support-agent-prompt.md # Production system prompt (5 ecosystem pillars)
-├── article.html            # Complete Medium / Inkray publication article
 ├── package.json
 └── README.md
 ```
