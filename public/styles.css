@@ -308,14 +308,29 @@ body {
 /* ── Footer ───────────────────────────────────────────── */
 .foot {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  flex-direction: column;
+  gap: 8px;
   margin-top: 14px;
   font-size: 10px;
   letter-spacing: 0.4px;
   color: var(--faint);
   text-transform: uppercase;
+}
+.foot-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.disclaimer {
+  font-size: 10px;
+  letter-spacing: 0.2px;
+  color: var(--muted);
+  text-transform: none;
+  line-height: 1.4;
+  border-top: 1px dashed var(--border);
+  padding-top: 6px;
+  opacity: 0.85;
 }
 .reset {
   font-family: var(--mono);
@@ -335,6 +350,6 @@ body {
 @media (max-width: 560px) {
   body { padding: 16px 12px; }
   .msg { max-width: 92%; }
-  .foot { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .foot-top { flex-direction: column; align-items: flex-start; gap: 4px; }
   .foot-note { text-align: left; }
 }

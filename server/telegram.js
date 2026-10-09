@@ -183,10 +183,11 @@ async function sendMessage(chatId, text) {
 async function handleUserMessage(chatId, userId, username, text) {
   if (text === '/start') {
     const welcome =
-      `👋 *Welcome to Walrus Protocol Developer Support*\n\n` +
-      `I am your dedicated developer support assistant with persistent institutional memory on *Walrus*.\n\n` +
+      `👋 *Welcome to Walrus Developer Support (Community Assistant)*\n\n` +
+      `I am a community-built developer support chatbot with persistent institutional memory powered by *Walrus Memory*.\n\n` +
       `Ask me anything about Walrus CLI, SDK integration, storage epochs, Seal encryption, or daemon configuration!\n\n` +
       `🔗 *Cross-Channel Link*: If you started on the Web Support Portal, type:\n\`/link WAL-XXXX\`\nto sync your open tickets and history.\n\n` +
+      `⚠️ _Note: This is an independent hackathon demo built for Walrus Sessions, not an official Mysten Labs support channel._\n\n` +
       `_(Type /reset at any time to start a fresh ticket)_`;
     await sendMessage(chatId, welcome);
     return;
