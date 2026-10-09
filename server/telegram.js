@@ -183,18 +183,72 @@ async function sendMessage(chatId, text) {
 async function handleUserMessage(chatId, userId, username, text) {
   if (text === '/start') {
     const welcome =
-      `👋 *Welcome to Walrus Ecosystem Support (Community Assistant)*\n\n` +
-      `I am a community developer assistant chatbot with persistent memory powered by *Walrus Memory*.\n\n` +
-      `I support the full Walrus stack across all 5 official pillars:\n` +
-      `• *Walrus*: Core storage infrastructure, CLI, and blobs\n` +
+      `👋 *Welcome to Walrus Ecosystem Support*\n\n` +
+      `I am an autonomous developer assistant chatbot with persistent institutional memory powered by *Walrus Memory*.\n\n` +
+      `*Supported Walrus Pillars:*\n` +
+      `• *Walrus*: Core storage, CLI, epochs, Sui gas coin merging\n` +
       `• *Walrus Memory*: MemWal MCP agent memory & Seal encryption\n` +
-      `• *Walrus Console*: Web console, buckets & identity linking\n` +
+      `• *Walrus Console*: Web console, buckets & identity pairing\n` +
       `• *Walrus Skills*: Coding agent skills (Claude Code, Cursor, AGY)\n` +
-      `• *Walrus Oyster API*: S3-compatible REST API (AWS CLI & boto3)\n\n` +
-      `🔗 *Cross-Channel Link*: If you started on the Web Support Portal, type:\n\`/link WAL-XXXX\`\nto sync your open tickets and history.\n\n` +
-      `⚠️ _Note: Independent community demo built for Walrus Sessions, not an official Mysten Labs channel._\n\n` +
-      `_(Type /reset at any time to start a fresh ticket)_`;
+      `• *Walrus Oyster API*: S3-compatible REST API (AWS CLI / boto3)\n\n` +
+      `*Bot Commands:*\n` +
+      `• \`/start\` — Welcome greeting and stack overview\n` +
+      `• \`/help\` — Detailed commands and developer guide\n` +
+      `• \`/reset\` — Reset ticket context to test clean session recall\n` +
+      `• \`/link WAL-XXXX\` — Link identity to Web Portal\n` +
+      `• \`/status\` — View Walrus Memory and agent runtime status\n\n` +
+      `💡 _Ask any technical question or paste CLI error traces to search on-chain runbooks._`;
     await sendMessage(chatId, welcome);
+    return;
+  }
+
+  if (text === '/help') {
+    const helpMsg =
+      `🛠️ *Walrus Dev Support — Command Directory*\n\n` +
+      `Here are the commands you can use in this chat:\n\n` +
+      `• \`/start\` — Restart session greeting and view ecosystem pillars\n` +
+      `• \`/help\` — Display this command directory\n` +
+      `• \`/reset\` — Reset ticket context to test clean session recall\n` +
+      `• \`/link WAL-XXXX\` — Link your identity with the Web Portal\n` +
+      `• \`/status\` — View real-time Walrus Memory connectivity and runtime status\n\n` +
+      `*How Memory Works:*\n` +
+      `1. When you report a bug, the bot calls \`memwal_recall\` against Walrus.\n` +
+      `2. If a verified runbook exists, it delivers the fix immediately.\n` +
+      `3. When a solution is confirmed, it commits an immutable blob to Walrus via \`memwal_remember\`.\n\n` +
+      `_(You can also tap Telegram's Menu button [/] to quickly trigger these commands.)_`;
+    await sendMessage(chatId, helpMsg);
+    return;
+  }
+
+  if (text === '/status') {
+    let healthStr = 'checking…';
+    try {
+      const curMemwal = activeMemwal || memwal;
+      if (curMemwal) {
+        const h = await curMemwal.health();
+        healthStr = h.ok ? '🟢 ONLINE (Healthy)' : '🔴 UNHEALTHY';
+      } else {
+        healthStr = '🟡 STANDBY';
+      }
+    } catch (e) {
+      healthStr = '⚠️ ERROR: ' + e.message;
+    }
+
+    const identity = linkManager.getIdentityByTelegramId(userId);
+    const linkStr = identity
+      ? `🟢 Linked to \`${identity.email}\` (${identity.tenant})`
+      : '⚪ Not linked (Use `/link WAL-XXXX` to sync Web chat)';
+
+    const statusMsg =
+      `📊 *Walrus Dev Support — System Status*\n\n` +
+      `• *Walrus Memory*: ${healthStr}\n` +
+      `• *Storage Network*: Sui Mainnet / Walrus Mainnet\n` +
+      `• *Protocol*: \`@mysten-incubation/memwal-mcp\` (v0.0.7)\n` +
+      `• *Default Namespace*: \`${NAMESPACE}\`\n` +
+      `• *Model*: Google Gemini 2.5 Flash via OpenRouter\n` +
+      `• *Identity Link*: ${linkStr}\n\n` +
+      `*Commands:* /start · /help · /reset · /link · /status`;
+    await sendMessage(chatId, statusMsg);
     return;
   }
 
@@ -348,6 +402,25 @@ async function startPolling() {
     process.exit(1);
   }
   console.log(`[telegram] Logged in as @${me.result.username} (${me.result.first_name})`);
+
+  // Ensure commands are cleanly lined up in Telegram UI Menu button
+  try {
+    const cmdRes = await tgCall('setMyCommands', {
+      commands: [
+        { command: 'start', description: 'Start Walrus Dev Support & stack overview' },
+        { command: 'help', description: 'Show available commands & Walrus pillars' },
+        { command: 'reset', description: 'Reset ticket context & start fresh session' },
+        { command: 'link', description: 'Link identity to Web Portal (WAL-XXXX)' },
+        { command: 'status', description: 'Check Walrus Memory & bot operational health' },
+      ],
+    });
+    if (cmdRes.ok) {
+      console.log('[telegram] Bot commands lined up and registered with Telegram.');
+    }
+  } catch (cmdErr) {
+    console.warn('[telegram] Failed to register commands with Telegram:', cmdErr.message);
+  }
+
   console.log('[telegram] Bot is now active and listening for messages…');
 
   let offset = 0;
