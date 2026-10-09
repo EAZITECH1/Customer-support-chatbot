@@ -342,12 +342,27 @@ function parseFrame(frame) {
   return { event, data };
 }
 
-// ── Wiring ─────────────────────────────────────────────────
+// ── Auto-resizing textarea & submission wiring ─────────────────────────
+function autoResizeInput() {
+  input.style.height = 'auto';
+  input.style.height = Math.min(input.scrollHeight, 180) + 'px';
+}
+
+input.addEventListener('input', autoResizeInput);
+
+input.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    form.requestSubmit();
+  }
+});
+
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   const msg = input.value.trim();
   if (!msg || busy) return;
   send(msg);
+  input.style.height = 'auto'; // Reset height after sending
 });
 
 resetBtn.addEventListener('click', async () => {

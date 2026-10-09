@@ -321,6 +321,7 @@ body {
 /* ── Composer ─────────────────────────────────────────── */
 .composer {
   display: flex;
+  align-items: flex-end;
   gap: 10px;
   padding-top: 16px;
   border-top: 1px solid var(--border);
@@ -332,10 +333,16 @@ body {
   color: var(--ink);
   background: var(--white);
   border: 1px solid var(--border-strong);
-  border-radius: 50px;
+  border-radius: 24px;
   padding: 13px 20px;
   outline: none;
+  resize: none;
+  min-height: 48px;
+  max-height: 180px;
+  line-height: 1.45;
   transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  overflow-y: auto;
+  scrollbar-width: thin;
 }
 .input::placeholder { color: var(--faint); }
 .input:focus {
@@ -345,6 +352,7 @@ body {
 .send {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 9px;
   font-family: var(--mono);
   font-size: 12px;
@@ -354,8 +362,10 @@ body {
   background: var(--ink);
   border: none;
   border-radius: 50px;
+  height: 48px;
   padding: 0 24px;
   cursor: pointer;
+  flex-shrink: 0;
   transition: transform 0.4s var(--ease), opacity 0.3s var(--ease);
 }
 .send:hover:not(:disabled) { transform: translateY(-1px); }
