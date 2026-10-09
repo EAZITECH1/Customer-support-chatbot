@@ -72,25 +72,56 @@ export class LLM {
           // or `<tool_call>...` instead of the standard structured `msg.tool_calls` array.
           if ((!msg.tool_calls || !msg.tool_calls.length) && typeof msg.content === 'string') {
             const raw = msg.content.trim();
-            const fnMatch = raw.match(/!function_call\s*:\s*(\{[\s\S]*\})/);
-            if (fnMatch) {
-              try {
-                const parsed = JSON.parse(fnMatch[1]);
-                if (parsed.call) {
-                  msg.tool_calls = [
-                    {
-                      id: 'call_' + Math.random().toString(36).slice(2, 10),
-                      type: 'function',
-                      function: {
-                        name: parsed.call,
-                        arguments: typeof parsed.arguments === 'string' ? parsed.arguments : JSON.stringify(parsed.arguments || {}),
-                      },
-                    },
-                  ];
-                  msg.content = '';
+            if (raw.includes('!function_call')) {
+              let callName = null;
+              let callArgs = {};
+
+              // 1. Try standard JSON parse first
+              const fnMatch = raw.match(/!function_call\s*:\s*(\{[\s\S]*\})/);
+              if (fnMatch) {
+                try {
+                  const parsed = JSON.parse(fnMatch[1]);
+                  if (parsed.call) {
+                    callName = parsed.call;
+                    callArgs = parsed.arguments || {};
+                  }
+                } catch {
+                  // Fall back to robust regex extraction if JSON contains raw newlines
                 }
-              } catch (e) {
-                console.warn('[llm] failed to parse !function_call text:', e.message);
+              }
+
+              // 2. Resilient fallback for models that output unescaped newlines inside strings
+              if (!callName) {
+                const nameMatch = raw.match(/"call"\s*:\s*"([^"]+)"/);
+                if (nameMatch) {
+                  callName = nameMatch[1];
+                  // Extract raw arguments chunk
+                  const textMatch = raw.match(/"text"\s*:\s*"([\s\S]*)/);
+                  if (textMatch) {
+                    let cleaned = textMatch[1].trim()
+                      .replace(/"\s*\}\s*\}\s*$/, '')
+                      .replace(/"\s*\}\s*$/, '')
+                      .replace(/"$/, '');
+                    callArgs = { text: cleaned };
+                  } else {
+                    const queryMatch = raw.match(/"query"\s*:\s*"([^"]+)"/);
+                    if (queryMatch) callArgs = { query: queryMatch[1] };
+                  }
+                }
+              }
+
+              if (callName) {
+                msg.tool_calls = [
+                  {
+                    id: 'call_' + Math.random().toString(36).slice(2, 10),
+                    type: 'function',
+                    function: {
+                      name: callName,
+                      arguments: typeof callArgs === 'string' ? callArgs : JSON.stringify(callArgs),
+                    },
+                  },
+                ];
+                msg.content = '';
               }
             }
           }
