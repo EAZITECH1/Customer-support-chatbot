@@ -1,9 +1,9 @@
 {
-  "name": "eazitech-support-chat",
+  "name": "walrus-dev-support",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Customer Support Chatbot for a Web3 creator studio powered by Walrus Memory (MemWal MCP) and OpenAI-compatible LLMs.",
+  "description": "Autonomous Developer Support Assistant for the Walrus & Sui ecosystem, powered by Walrus Memory (MemWal MCP) and LLMs.",
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",

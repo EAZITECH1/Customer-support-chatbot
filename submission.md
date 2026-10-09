@@ -1,51 +1,42 @@
 # Submission — Walrus Sessions: Chatbots That Remember
 
-| | |
+| Field | Value |
 |---|---|
-| **Project** | EAZITECH Customer Support Chatbot — Decentralized Institutional Memory on Walrus |
-| **System Prompt** | Production prompt — [support-agent-prompt.md](support-agent-prompt.md) (Template: [support-agent-prompt.template.md](support-agent-prompt.template.md)) |
-| **Agent ID (delegate key)** | `21a5566e62214e85fdd9010d19b571bf8b6c897bd84472fe8b948766675a4c2a4` |
-| **MemWalAccount Object** | [`0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4`](https://suiscan.xyz/mainnet/object/0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4) |
-| **Agent Wallet** | `0x679d547b18cf9f2e77f1d33f932cbf4de5c63dda6a5c5d0e44caf7ae4334cd1b` |
-| **Blobs on Mainnet** | ~12–14 raw blobs · 8 unique memories (resolved-video · product-intel · open-tickets) |
+| **Project** | **Walrus Dev Support** — Autonomous Developer Assistant on Walrus Memory |
+| **System Prompt** | Production prompt: [`support-agent-prompt.md`](support-agent-prompt.md) (Template: [`support-agent-prompt.template.md`](support-agent-prompt.template.md)) |
+| **MemWalAccount Object** | [`0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4`](https://suiscan.xyz/mainnet/object/0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4) (Sui Mainnet Shared Object) |
+| **Delegate Account** | `0x3d67903dd4d875d2ebfbba47fed2d7eb09e927e6049374ce7ed522a085577610` |
 | **Network** | Sui Mainnet / Walrus Mainnet |
-| **MemWal Package** | `0xe7c16fbea0560e7057e2bf7422feaa4fb313749fc69c9e9092fac7a33b81d7f5` |
+| **MemWal Package** | `@mysten-incubation/memwal-mcp` (v0.0.7) |
+| **LLM Model** | Google Gemini 2.5 Flash (via OpenRouter) |
+| **Total Blobs on Walrus** | 15+ blobs committed across `support`, `open-tickets`, `product-intel` |
 | **Telegram Bot (24/7)** | [@EazitechSupportBot](https://t.me/EazitechSupportBot) |
 | **Web Application** | [https://eazitech-support.onrender.com](https://eazitech-support.onrender.com) |
-| **Demo Video** | [youtu.be/Ogv5r7-aKMo](https://youtu.be/Ogv5r7-aKMo) |
-| **Upstream Issues Filed** | [MemWal#814](https://github.com/MystenLabs/MemWal/issues/814) · [#815](https://github.com/MystenLabs/MemWal/issues/815) · [#816](https://github.com/MystenLabs/MemWal/issues/816) |
+| **Written Article** | [`article.html`](article.html) (Ready for Medium & Inkray publication) |
+| **Repository** | [https://github.com/EAZITECH1/Customer-support-chatbot](https://github.com/EAZITECH1/Customer-support-chatbot) |
 
 ---
 
 ## What It Is
 
-An autonomous, decentralized customer support chatbot built for **EAZITECH** (a Web3 creator studio). Unlike conventional support bots that suffer from session amnesia or lock data inside proprietary SaaS vendors, this chatbot turns every resolved ticket into permanent, structured knowledge owned by the studio and stored immutably on **Walrus**.
+**Walrus Dev Support** is an autonomous, self-learning developer support assistant built specifically for the **Walrus and Sui ecosystem**. 
 
-When a customer reports an issue, the agent queries Walrus Memory (`memwal_recall`) across domain-specific namespaces (`resolved-video`, `resolved-billing`, etc.) before diagnosing. When an issue is resolved, it commits a structured, deduplicated post-mortem to Walrus on Sui Mainnet.
+Unlike conventional support chatbots that suffer from session amnesia or lock developer intelligence inside proprietary SaaS databases, this assistant turns every verified technical problem into an immutable, structured runbook owned by the ecosystem and stored on **Walrus**.
 
-Deployed 24/7 across two seamless channels:
-- **Telegram Bot** (`@EazitechSupportBot`): Always-on mobile channel for real-time client assistance.
-- **Web Application** (`eazitech-support.onrender.com`): Editorial support portal featuring real-time SSE memory inspection.
+When a developer encounters an issue (such as Sui gas coin fragmentation during `walrus store` or empty `memwal_recall` query namespaces), the agent queries Walrus Memory (`memwal_recall`) before diagnosing. When the developer verifies the fix, it commits a structured post-mortem to Walrus on Sui Mainnet via `memwal_remember`.
+
+Deployed 24/7 across two unified channels:
+- **Web Portal** (`https://eazitech-support.onrender.com`): High-performance developer interface featuring real-time Server-Sent Events (SSE) memory inspection, ticker chips, and link code generation.
+- **Telegram Bot** (`@EazitechSupportBot`): 24/7 long-polling mobile bot providing instant recall and cross-channel ticket sync.
 
 ---
 
 ## Submission Checklist
 
-- [x] **Working Chatbot & Deployment**: Live 24/7 on Telegram ([@EazitechSupportBot](https://t.me/EazitechSupportBot)) and Web ([https://eazitech-support.onrender.com](https://eazitech-support.onrender.com))
+- [x] **Working Chatbot & Deployment**: Live 24/7 on Web ([eazitech-support.onrender.com](https://eazitech-support.onrender.com)) and Telegram ([@EazitechSupportBot](https://t.me/EazitechSupportBot))
 - [x] **Walrus Memory Integration**: Direct stdio MCP client integration with `@mysten-incubation/memwal-mcp`
-- [x] **Multi-Namespace Memory Architecture**: `resolved-{area}`, `open-tickets`, `customer-{id}`, `product-intel` with tier permissions
-- [x] **On-Chain Mainnet Evidence**: 14 blobs committed to Walrus Mainnet under account [`0xf6b75c6f…3175d4`](https://suiscan.xyz/mainnet/object/0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4) ([evidence/blobs.md](evidence/blobs.md))
-- [x] **Full Copy-Pasteable Prompt & Template**: [support-agent-prompt.md](support-agent-prompt.md) and [support-agent-prompt.template.md](support-agent-prompt.template.md)
-- [x] **Behavioral Calibration Matrix**: 8-point behavioral test suite, all verified ([evidence/findings.md](evidence/findings.md))
-- [x] **Upstream Contributions to Mysten Labs**: Detailed issue reports [#814](https://github.com/MystenLabs/MemWal/issues/814), [#815](https://github.com/MystenLabs/MemWal/issues/815), [#816](https://github.com/MystenLabs/MemWal/issues/816)
-- [x] **Demo Video**: [youtu.be/Ogv5r7-aKMo](https://youtu.be/Ogv5r7-aKMo)
-- [x] **Technical Article**: Complete deep-dive article detailing architecture and findings
-
----
-
-## Production Reliability & Relayer Handling
-
-During early development, the managed relayer occasionally returned 429 (`ip_active_cap`) or 503 errors under heavy reconnections. We engineered the production deployment on Render to:
-1. Maintain a single shared MCP child process between Express and Telegram, preventing connection-cap exhaustion.
-2. Implement graceful background reconnection and exponential backoff.
-3. Decouple memory availability from the web server boot so the frontend stays responsive even during transient relayer hiccups.
+- [x] **Multi-Namespace Architecture**: `support` (canonical knowledge base), `open-tickets`, `customer-{id}`, `product-intel`
+- [x] **On-Chain Mainnet Evidence**: 15+ blobs committed to Walrus Mainnet under account [`0xf6b75c6f…3175d4`](https://suiscan.xyz/mainnet/object/0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4)
+- [x] **Full Copy-Pasteable Prompt & Template**: [`support-agent-prompt.md`](support-agent-prompt.md) and [`support-agent-prompt.template.md`](support-agent-prompt.template.md)
+- [x] **Evidence of Real Use**: Screen recordings across Web and Telegram demonstrating real-world learning and recall
+- [x] **Written Article**: Complete, formatted article ready for publication ([`article.html`](article.html))
