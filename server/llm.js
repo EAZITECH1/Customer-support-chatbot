@@ -66,7 +66,36 @@ export class LLM {
       if (res.ok) {
         const data = await res.json();
         const msg = data?.choices?.[0]?.message;
-        if (msg) return msg;
+        if (msg) {
+          // Normalize models (like Qwen / DeepSeek / Mistral on OpenRouter) that output
+          // text-based function calls like `!function_call:{"call": "...", "arguments": {...}}`
+          // or `<tool_call>...` instead of the standard structured `msg.tool_calls` array.
+          if ((!msg.tool_calls || !msg.tool_calls.length) && typeof msg.content === 'string') {
+            const raw = msg.content.trim();
+            const fnMatch = raw.match(/!function_call\s*:\s*(\{[\s\S]*\})/);
+            if (fnMatch) {
+              try {
+                const parsed = JSON.parse(fnMatch[1]);
+                if (parsed.call) {
+                  msg.tool_calls = [
+                    {
+                      id: 'call_' + Math.random().toString(36).slice(2, 10),
+                      type: 'function',
+                      function: {
+                        name: parsed.call,
+                        arguments: typeof parsed.arguments === 'string' ? parsed.arguments : JSON.stringify(parsed.arguments || {}),
+                      },
+                    },
+                  ];
+                  msg.content = '';
+                }
+              } catch (e) {
+                console.warn('[llm] failed to parse !function_call text:', e.message);
+              }
+            }
+          }
+          return msg;
+        }
 
         // Some providers (e.g. OpenRouter) return an error object inside a 200
         // body — e.g. an upstream 504/aborted/timeout. Treat those like a 5xx.
