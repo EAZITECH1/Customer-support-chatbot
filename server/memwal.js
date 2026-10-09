@@ -150,8 +150,11 @@ export class MemWal {
     if (!this.isMemoryTool(name)) {
       return { ok: false, text: `Unknown tool: ${name}`, raw: null };
     }
-    // Default the namespace so the model never has to think about it.
-    const finalArgs = { namespace: this.namespace, ...(args || {}) };
+    // Normalize namespace: knowledge base resolutions live in this.namespace (default 'support').
+    let targetNs = args?.namespace || this.namespace;
+    if (targetNs.startsWith('resolved-')) targetNs = this.namespace;
+    const finalArgs = { ...(args || {}), namespace: targetNs };
+
     try {
       const res = await this.client.callTool({ name, arguments: finalArgs });
       if (res?.isError && retry) {

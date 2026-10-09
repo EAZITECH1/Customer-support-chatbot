@@ -299,7 +299,8 @@ app.post('/api/chat', async (req, res) => {
         }
 
         const isHealth = name === 'memwal_health';
-        const ns = isHealth ? null : args?.namespace || NAMESPACE;
+        const rawNs = args?.namespace || NAMESPACE;
+        const ns = isHealth ? null : (rawNs.startsWith('resolved-') ? NAMESPACE : rawNs);
         sse(res, 'tool_start', { tool: name, namespace: ns, preview: isHealth ? '' : argsPreview(name, args) });
 
         let result;
