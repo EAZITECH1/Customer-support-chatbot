@@ -12,6 +12,7 @@ import { LLM } from './llm.js';
 import { SessionStore, pruneTranscript } from './store.js';
 import { materializeCredentials } from './credentials.js';
 import { linkManager } from './link.js';
+import { KAPA_TOOL, searchWalrusDocs } from './kapa.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -311,7 +312,7 @@ async function handleUserMessage(chatId, userId, username, text) {
     }
     const curMemwal = activeMemwal || memwal;
     const curLlm = activeLlm || llm;
-    const tools = [HEALTH_TOOL, ...(curMemwal?.tools?.length ? curMemwal.asOpenAITools() : [])];
+    const tools = [HEALTH_TOOL, KAPA_TOOL, ...(curMemwal?.tools?.length ? curMemwal.asOpenAITools() : [])];
     let finalText = null;
 
     for (let round = 0; round < MAX_ROUNDS; round++) {
@@ -355,6 +356,9 @@ async function handleUserMessage(chatId, userId, username, text) {
               ? `HEALTHY. Walrus Memory reachable. Memory is live.`
               : `UNHEALTHY: Walrus Memory unavailable.`,
           };
+        } else if (name === 'search_walrus_docs') {
+          console.log(`[telegram] searching official Walrus docs: "${args?.query}"`);
+          result = await searchWalrusDocs(args?.query || '');
         } else if (curMemwal.isMemoryTool(name)) {
           result = await curMemwal.call(name, args);
         } else {

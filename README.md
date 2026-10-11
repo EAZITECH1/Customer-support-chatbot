@@ -20,14 +20,15 @@ Traditional AI support chatbots suffer from **complete session amnesia**:
 
 ---
 
-## 2. The Solution: Sovereign Memory on Walrus
+## 2. The Solution: Dual Grounding with Sovereign Walrus Memory & Official Docs
 
-**Walrus Dev Support** transforms how developer ecosystems retain and share knowledge by using **Walrus decentralized blob storage** via the **MemWal MCP** protocol:
+**Walrus Dev Support** transforms how developer ecosystems retain and share knowledge through a **Dual Grounding Architecture**:
 
-- **Recall Before Answering (`memwal_recall`)**: The assistant chatbot searches past verified technical runbooks on Walrus before attempting to synthesize speculative code.
-- **Structured Ingestion (`memwal_remember`)**: When an issue is confirmed resolved by a developer, the assistant chatbot converts the fix into an immutable structured post-mortem and commits it directly to Sui Mainnet.
+- **Dynamic Sovereign Memory on Walrus (`memwal_recall`)**: The assistant queries past verified technical post-mortems and bug runbooks stored on **Sui Mainnet** before attempting speculative diagnostics.
+- **Authoritative Static Grounding (`search_walrus_docs` via Kapa.ai)**: Queries the live official index of `docs.wal.app` to verify CLI command syntax, flags, Oyster S3 endpoints, and epoch math with zero hallucination.
+- **Structured Ingestion (`memwal_remember`)**: When an issue is confirmed resolved by a developer, the assistant converts the fix into an immutable structured post-mortem and commits it directly to Sui Mainnet.
 - **Cross-Channel Parity**: A solution learned on the Web Portal is instantly searchable on Telegram, and vice versa.
-- **Sovereign & Decentralized**: The knowledge base is anchored as decentralized blobs on Walrus, owned by the project's own Sui wallet. Models can be swapped on the fly with zero memory loss.
+- **Sovereign & Decentralized**: The episodic knowledge base is anchored as decentralized blobs on Walrus, owned by the project's own Sui wallet. Models can be swapped on the fly with zero memory loss.
 
 ---
 
@@ -62,7 +63,7 @@ Walrus Dev Support is an autonomous developer support chatbot strictly grounded 
 | **Session Continuity** | **Total Amnesia.** Refreshing the page or starting a new session wiped all context. | **Persistent Institutional Knowledge.** Past resolutions are recalled across separate sessions and devices. |
 | **Cross-Channel Parity** | **Siloed.** Web chat had no connection to Telegram (`@WalrusSupportBot`). | **Unified Sovereign Memory.** A solution confirmed on the Web is instantly recalled on Telegram. |
 | **Handling Known Bugs** | **Repetitive Interrogation.** Asks every developer the same 5 diagnostic questions every single time. | **Instant Solution Delivery.** Identifies known symptoms and serves the verified runbook immediately in <2 seconds. |
-| **Response Reliability** | **Hallucination Risk.** Synthesizes generic guesses or fake CLI flags when uncertain. | **Strict Grounding.** High-confidence answers backed by on-chain verified post-mortems (`recalled past resolutions`). |
+| **Response Reliability** | **Hallucination Risk.** Synthesizes generic guesses or fake CLI flags when uncertain. | **Dual Grounded & Verified.** Tier 1 on-chain Walrus Memory for verified post-mortems + Tier 2 official `docs.wal.app` reference citations via Kapa.ai. |
 | **Data Sovereignty** | **Vendor-Locked.** Memory locked in proprietary SaaS databases or third-party AI APIs. | **Decentralized & Portable.** Stored as immutable blobs on Walrus, owned by the project's own Sui wallet. |
 
 ---
@@ -115,21 +116,22 @@ The live memory lifecycle was recorded end-to-end on October 9, 2026:
    │                                LLM Reasoning Layer                                        │
    │                           Google Gemini 2.5 Flash via OpenRouter                          │
    │                   (Sub-second latency, 1M+ token context, native tool use)                │
-   └─────────────────────────────────────────────┬─────────────────────────────────────────────┘
-                                                 │ stdio JSON-RPC
-                                                 ▼
-   ┌───────────────────────────────────────────────────────────────────────────────────────────┐
-   │                         MemWal MCP Client (Stdio Child Process)                           │
-   │                         @mysten-incubation/memwal-mcp (v0.0.7)                            │
-   │                                                                                           │
-   │     memwal_health   │   memwal_recall   │   memwal_remember   │   memwal_analyze          │
-   └─────────────────────────────────────────────┬─────────────────────────────────────────────┘
-                                                 │ Authenticated Relayer Bridge
-                                                 ▼
-   ┌───────────────────────────────────────────────────────────────────────────────────────────┐
-   │                           Walrus Decentralized Blob Storage                               │
-   │                          Sui Mainnet (MemWalAccount Object)                               │
-   └───────────────────────────────────────────────────────────────────────────────────────────┘
+   └──────────────────────┬─────────────────────────────────────────────────────┬──────────────┘
+                          │ stdio JSON-RPC                                      │ REST API (HTTPS)
+                          ▼                                                     ▼
+   ┌─────────────────────────────────────────────┐       ┌─────────────────────────────────────┐
+   │   Dynamic Episodic Memory (MemWal MCP)      │       │  Official Docs Grounding (Kapa.ai)  │
+   │   @mysten-incubation/memwal-mcp (v0.0.7)    │       │  Live search across docs.wal.app    │
+   │                                             │       │                                     │
+   │   memwal_recall   │   memwal_remember       │       │         search_walrus_docs          │
+   │   memwal_analyze  │   memwal_health         │       │     (CLI syntax, Oyster S3, epochs) │
+   └──────────────────────┬──────────────────────┘       └──────────────────┬──────────────────┘
+                          │ Authenticated Relayer Bridge                    │ Real-Time Citations
+                          ▼                                                 ▼
+   ┌─────────────────────────────────────────────┐       ┌─────────────────────────────────────┐
+   │      Walrus Decentralized Blob Storage      │       │     Official Walrus Documentation   │
+   │      Sui Mainnet (MemWalAccount Object)     │       │       docs.wal.app (All 5 Pillars)  │
+   └─────────────────────────────────────────────┘       └─────────────────────────────────────┘
 ```
 
 ### Namespace Partitioning Strategy
@@ -166,6 +168,8 @@ During development, we resolved three critical challenges to achieve production-
    MemWal MCP communicates with the relayer over SSE, which occasionally closes idle connections (`bridge.sse_idle_closed`). We added an automatic 800ms retry wrapper in `memwal.call()` to absorb momentary reconnects seamlessly.
 3. **Cross-Channel Identity Linking**:  
    Developers can generate a one-time link code (`WAL-XXXX`) on the Web Portal and redeem it on Telegram with `/link WAL-XXXX`, instantly linking tickets and history across platforms.
+4. **Official Documentation Grounding (`search_walrus_docs` via Kapa.ai)**:  
+   While dynamic Walrus Memory stores verified bug fixes and operational runbooks, official static documentation is essential for exact CLI flags, Oyster S3 endpoints, and epoch calculations. By integrating Kapa.ai directly as an autonomous tool grounded on `docs.wal.app`, the agent enforces a strict 4-Tier Truth Hierarchy with zero hallucinated flags and cited sources.
 
 ---
 
@@ -191,6 +195,8 @@ LLM_API_KEY=your_openrouter_or_llm_api_key
 LLM_MODEL=google/gemini-2.5-flash
 TELEGRAM_BOT_TOKEN=your_telegram_bot_token  # optional
 MEMWAL_NAMESPACE=support
+KAPA_PROJECT_ID=your_kapa_project_id
+KAPA_API_KEY=your_kapa_api_key
 ```
 
 ### 4. Authorize Walrus Memory
@@ -219,6 +225,7 @@ npm start
 ├── server/
 │   ├── index.js            # Express server, SSE chat endpoint & memory tools
 │   ├── telegram.js         # Telegram bot long-polling & tool execution loop
+│   ├── kapa.js             # Official Walrus docs search tool (Kapa.ai client)
 │   ├── memwal.js           # Stdio MCP client for @mysten-incubation/memwal-mcp
 │   ├── llm.js              # Fetch-based OpenAI-compatible completion client
 │   ├── credentials.js      # Materializes base64 credentials into isolated HOME

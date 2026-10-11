@@ -24,7 +24,10 @@
 
 Unlike conventional support chatbots that suffer from session amnesia or lock developer intelligence inside proprietary SaaS databases, this chatbot turns every verified technical problem into an immutable, structured runbook owned by the ecosystem and stored on **Walrus**.
 
-When a developer encounters an issue (such as Sui gas coin fragmentation during `walrus store` or empty `memwal_recall` query namespaces), the agent queries Walrus Memory (`memwal_recall`) before diagnosing. When the developer verifies the fix, it commits a structured post-mortem to Walrus on Sui Mainnet via `memwal_remember`.
+When a developer encounters an issue (such as Sui gas coin fragmentation during `walrus store` or empty `memwal_recall` query namespaces), the agent operates under a strict **Dual Grounding Architecture**:
+1. **Dynamic Sovereign Memory (`memwal_recall`)**: Checks on-chain Walrus Memory on Sui Mainnet for past verified runbooks, incident post-mortems, and developer session history.
+2. **Official Documentation Engine (`search_walrus_docs` via Kapa.ai)**: Retrieves exact CLI flags, Oyster S3 REST APIs, and epoch formulas directly from `docs.wal.app` with cited sources.
+3. **Structured Ingestion (`memwal_remember`)**: When the developer confirms the resolution, it commits an immutable, structured post-mortem back to Walrus on Sui Mainnet.
 
 Deployed 24/7 across two unified channels:
 - **Web Portal** (`https://eazitech-support.onrender.com`): High-performance developer interface featuring real-time Server-Sent Events (SSE) memory inspection, ticker chips, and link code generation.
@@ -36,6 +39,7 @@ Deployed 24/7 across two unified channels:
 
 - [x] **Working Chatbot & Deployment**: Live 24/7 on Web ([eazitech-support.onrender.com](https://eazitech-support.onrender.com)) and Telegram ([@EazitechSupportBot](https://t.me/EazitechSupportBot))
 - [x] **Walrus Memory Integration**: Direct stdio MCP client integration with `@mysten-incubation/memwal-mcp`
+- [x] **Official Docs Grounding**: Live semantic documentation retrieval via Kapa.ai (`search_walrus_docs`) referencing `docs.wal.app`
 - [x] **Multi-Namespace Architecture**: `support` (canonical knowledge base), `open-tickets`, `customer-{id}`, `product-intel`
 - [x] **On-Chain Mainnet Evidence**: 15+ blobs committed to Walrus Mainnet under account [`0xf6b75c6f…3175d4`](https://suiscan.xyz/mainnet/object/0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4)
 - [x] **Full Copy-Pasteable Prompt & Template**: [`support-agent-prompt.md`](support-agent-prompt.md) and [`support-agent-prompt.template.md`](support-agent-prompt.template.md)

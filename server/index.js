@@ -20,6 +20,7 @@ import { LLM } from './llm.js';
 import { SessionStore, pruneTranscript } from './store.js';
 import { materializeCredentials } from './credentials.js';
 import { startTelegramBot } from './telegram.js';
+import { KAPA_TOOL, searchWalrusDocs } from './kapa.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -261,9 +262,9 @@ app.post('/api/chat', async (req, res) => {
     // Recover memory if a transient relayer outage dropped it since boot.
     await ensureMemWal();
     if (!memwalReady) sse(res, 'agent_status', { phase: 'memory_offline' });
-    // Always expose memwal_health so the model can verify (and, per the prompt,
-    // refuse to answer if memory is down). Memory tools only when connected.
-    const tools = [HEALTH_TOOL, ...(memwalReady ? memwal.asOpenAITools() : [])];
+    // Always expose memwal_health and search_walrus_docs (official docs grounding).
+    // Memory tools only when connected.
+    const tools = [HEALTH_TOOL, KAPA_TOOL, ...(memwalReady ? memwal.asOpenAITools() : [])];
 
     let finalText = null;
 
@@ -288,7 +289,7 @@ app.post('/api/chat', async (req, res) => {
         break;
       }
 
-      // Execute each tool call against MemWal and feed results back.
+      // Execute each tool call against MemWal/Kapa and feed results back.
       for (const tc of toolCalls) {
         const name = tc.function?.name;
         let args = {};
@@ -299,9 +300,11 @@ app.post('/api/chat', async (req, res) => {
         }
 
         const isHealth = name === 'memwal_health';
+        const isDocsSearch = name === 'search_walrus_docs';
         const rawNs = args?.namespace || NAMESPACE;
-        const ns = isHealth ? null : (rawNs.startsWith('resolved-') ? NAMESPACE : rawNs);
-        sse(res, 'tool_start', { tool: name, namespace: ns, preview: isHealth ? '' : argsPreview(name, args) });
+        const ns = isHealth ? null : (isDocsSearch ? 'docs.wal.app' : (rawNs.startsWith('resolved-') ? NAMESPACE : rawNs));
+        const previewText = isHealth ? '' : (isDocsSearch ? (args?.query || '') : argsPreview(name, args));
+        sse(res, 'tool_start', { tool: name, namespace: ns, preview: previewText });
 
         let result;
         if (isHealth) {
@@ -318,13 +321,17 @@ app.post('/api/chat', async (req, res) => {
                 'do NOT mention memory, Walrus, a relayer, tools, login, restore, a namespace, or any ' +
                 'command. Operator remediation happens outside this chat; never surface it to the customer.',
           };
+        } else if (isDocsSearch) {
+          result = await searchWalrusDocs(args.query || '');
         } else if (memwal.isMemoryTool(name)) {
           result = await memwal.call(name, args);
         } else {
           result = { ok: false, text: `Unknown tool: ${name}` };
         }
 
-        const summary = summarizeToolResult(name, result.text);
+        const summary = isDocsSearch
+          ? { detail: `${result.sources?.length || 0} official sources cited`, blobId: null }
+          : summarizeToolResult(name, result.text);
         sse(res, 'tool_end', {
           tool: name,
           namespace: ns,
