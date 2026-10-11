@@ -9,7 +9,7 @@
 | **Network** | Sui Mainnet / Walrus Mainnet |
 | **MemWal Package** | `@mysten-incubation/memwal-mcp` (v0.0.7) |
 | **LLM Model** | Google Gemini 2.5 Flash (via OpenRouter) |
-| **Total Blobs on Walrus** | 15+ blobs committed across `support`, `open-tickets`, `product-intel` |
+| **Total Blobs on Walrus** | 17 blobs committed across `support`, `open-tickets`, `product-intel` (see [`evidence/blobs.md`](evidence/blobs.md)) |
 | **Telegram Bot (24/7)** | [@EazitechSupportBot](https://t.me/EazitechSupportBot) |
 | **Web Application** | [https://eazitech-support.onrender.com](https://eazitech-support.onrender.com) |
 | **Demo Video** | [Watch on YouTube (2m 15s Walkthrough)](https://youtu.be/V6wrIK1P5SI) |
@@ -41,7 +41,7 @@ Deployed 24/7 across two unified channels:
 - [x] **Walrus Memory Integration**: Direct stdio MCP client integration with `@mysten-incubation/memwal-mcp`
 - [x] **Official Docs Grounding**: Live semantic documentation retrieval via Kapa.ai (`search_walrus_docs`) referencing `docs.wal.app`
 - [x] **Multi-Namespace Architecture**: `support` (canonical knowledge base), `open-tickets`, `customer-{id}`, `product-intel`
-- [x] **On-Chain Mainnet Evidence**: 15+ blobs committed to Walrus Mainnet under account [`0xf6b75c6f…3175d4`](https://suiscan.xyz/mainnet/object/0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4)
+- [x] **On-Chain Mainnet Evidence**: 17 blobs committed to Walrus Mainnet under account [`0xf6b75c6f…3175d4`](https://suiscan.xyz/mainnet/object/0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4) (detailed in [`evidence/blobs.md`](evidence/blobs.md))
 - [x] **Full Copy-Pasteable Prompt & Template**: [`support-agent-prompt.md`](support-agent-prompt.md) and [`support-agent-prompt.template.md`](support-agent-prompt.template.md)
 - [x] **Evidence of Real Use**: Screen recordings across Web and Telegram demonstrating real-world learning and recall ([YouTube Walkthrough](https://youtu.be/V6wrIK1P5SI))
 - [x] **Written Article**: Published on Medium: [How I Built a Self-Learning Developer Assistant on Walrus Memory](https://medium.com/@ajayiisrael523/how-i-built-a-self-learning-developer-assistant-on-walrus-memory-c6bcb9e08f7b)

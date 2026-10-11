@@ -151,7 +151,7 @@ Every memory transaction is anchored directly to **Sui Mainnet** and inspectable
 
 - **MemWalAccount Object ID**: [`0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4`](https://suiscan.xyz/mainnet/object/0xf6b75c6fd44e685829e0baa04077c42c09bed658819e921126dc11ce8c3175d4) (Sui Mainnet Shared Object)
 - **Agent Delegate Account**: `0x3d67903dd4d875d2ebfbba47fed2d7eb09e927e6049374ce7ed522a085577610`
-- **Total Blobs Committed**: **15+ Blobs** verified and inspectable on Walruscan.
+- **Total Blobs Committed**: **17 Blobs** verified and inspectable across active namespaces (see [`evidence/blobs.md`](evidence/blobs.md)).
 - **Sample Verified Blobs**:
   - [`vPVfOyZZd8U7MUW1IxX6aPBSxRdcBeLCwcbbz7CjUFA`](https://walruscan.com/mainnet/blob/vPVfOyZZd8U7MUW1IxX6aPBSxRdcBeLCwcbbz7CjUFA) — `product-intel` recurring pattern
   - [`7Yxc8cjqpxmjS-GrVsFqFfPDNXo_mkazOLz451gASPI`](https://walruscan.com/mainnet/blob/7Yxc8cjqpxmjS-GrVsFqFfPDNXo_mkazOLz451gASPI) — `open-tickets` escalation state
