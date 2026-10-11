@@ -58,7 +58,7 @@ Walrus Dev Support is an autonomous developer support chatbot strictly grounded 
 
 ## 5. Before vs. After Walrus Memory
 
-| Capability | Before Walrus Memory (Stateless LLM) | After Walrus Memory (MemWal on Sui) |
+| Capability | Before Walrus Memory (Stateless LLM) | After Walrus Memory + Kapa.ai (Dual Grounded) |
 | :--- | :--- | :--- |
 | **Session Continuity** | **Total Amnesia.** Refreshing the page or starting a new session wiped all context. | **Persistent Institutional Knowledge.** Past resolutions are recalled across separate sessions and devices. |
 | **Cross-Channel Parity** | **Siloed.** Web chat had no connection to Telegram (`@WalrusSupportBot`). | **Unified Sovereign Memory.** A solution confirmed on the Web is instantly recalled on Telegram. |
