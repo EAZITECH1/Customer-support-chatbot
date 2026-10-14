@@ -373,8 +373,8 @@ app.post('/api/chat', async (req, res) => {
 // ── Start ──────────────────────────────────────────────────────────────────────
 // Listen FIRST so the web app is always reachable, even if MemWal is slow/down.
 // Connect memory in the background; per-request ensureMemWal() recovers it later.
-app.listen(PORT, () => {
-  console.log(`\n  eazitech-support-chat  →  http://localhost:${PORT}\n`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`\n  eazitech-support-chat  →  http://0.0.0.0:${PORT}\n`);
   console.log('  connecting to Walrus Memory…');
 });
 initMemWal().then(() => {
